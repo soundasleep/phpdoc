@@ -17,6 +17,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
   var $current_namespace = null;
   var $current_class = null;
   var $current_uses = array();
+  var $last_property = null;
 
   public function __construct(Logger $logger) {
     $this->logger = $logger;
@@ -105,12 +106,31 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
       ));
     }
 
+    if ($node instanceof \PhpParser\Node\Stmt\Property) {
+      $this->last_property = $node;
+    }
+
+    if ($node instanceof \PhpParser\Node\Stmt\PropertyProperty) {
+      $this->addClassProperty(array(
+        'name' => $node->name,
+        'default' => $node->default,
+        'public' => $this->last_property->isPublic(),
+        'protected' => $this->last_property->isProtected(),
+        'private' => $this->last_property->isPrivate(),
+        'static' => $this->last_property->isStatic(),
+        'comment' => $node->getDocComment(),
+        'line' => $node->getLine(),
+        'file' => $this->file,
+      ));
+    }
+
     $this->logger->info(get_class($node));
   }
 
   function addNamespace($data) {
     $this->current_namespace = $data['namespace'];
     $this->current_class = null;
+    $this->last_property = null;
     $this->current_uses = array();
 
     if (!isset($result['namespaces'][$this->current_namespace])) {
@@ -126,6 +146,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     $formatted['extends'] = ($data['extends'] ? $data['extends']->toString() : null);
     $formatted['uses'] = $this->current_uses;
     $formatted['methods'] = array();
+    $formatted['properties'] = array();
 
     $formatted['implements'] = array();
     foreach ($data['implements'] as $i) {
@@ -144,6 +165,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
   function addClassMethod($data) {
     $formatted = $data;
     $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
+    $formatted['default'] = $this->formatDefault($data['default']);
 
     $formatted['params'] = array();
     foreach ($data['params'] as $param) {
@@ -165,6 +187,59 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     }
 
     $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['methods'][$data['name']] = $formatted;
+  }
+
+  function addClassProperty($data) {
+    $formatted = $data;
+    $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
+    $formatted['default'] = $this->formatDefault($data['default']);
+
+    $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['properties'][$data['name']] = $formatted;
+  }
+
+  function formatDefault($default) {
+    if (!$default) {
+      return null;
+    }
+
+    if ($default instanceof \PhpParser\Node\Expr\Array_) {
+      return array(
+        'type' => 'array',
+        'items' => count($default->items),
+      );
+    }
+
+    if ($default instanceof \PhpParser\Node\Expr\ConstFetch) {
+      return array(
+        'type' => 'const',
+        'name' => $default->name->toString(),
+      );
+    }
+
+    if ($default instanceof \PhpParser\Node\Scalar\LNumber) {
+      return array(
+        'type' => 'number',
+        'value' => $default->parse($default->value),
+      );
+    }
+
+    if ($default instanceof \PhpParser\Node\Scalar\DNumber) {
+      return array(
+        'type' => 'number',
+        'value' => $default->parse($default->value),
+      );
+    }
+
+    if ($default instanceof \PhpParser\Node\Scalar\String) {
+      return array(
+        'type' => 'string',
+        'value' => $default->value,
+      );
+    }
+
+    return array(
+      'type' => get_class($default),
+    );
   }
 
 }
