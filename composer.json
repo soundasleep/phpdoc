@@ -1,0 +1,13 @@
+{
+  "name": "soundasleep/phpdoc-parser",
+  "description": "Parse PHP documentation blocks",
+  "autoload": {
+    "psr-4": {
+      "PHPDocParser\\": "src"
+    }
+  },
+  "require": {
+    "nikic/php-parser": "~1.0.2",
+    "monolog/monolog": "~1.13"
+  }
+}
