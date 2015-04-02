@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPDocParser\Test\Apis;
+namespace PHPDoc\Test\Apis;
 
 use \Apis\Api;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace PHPDocParser\Test;
+namespace PHPDoc\Test;
 
-use PHPDocParser\MyLogger;
-use PHPDocParser\Parser;
+use PHPDoc\MyLogger;
+use PHPDoc\Parser;
 
 class SimpleTest extends DocCommentTest {
 
@@ -12,19 +12,19 @@ class SimpleTest extends DocCommentTest {
   }
 
   function testNamespace() {
-    $this->assertTrue(isset($this->result['namespaces']['PHPDocParser\Test\Apis']));
+    $this->assertTrue(isset($this->result['namespaces']['PHPDoc\Test\Apis']));
   }
 
   function testCommentTitle() {
-    $this->assertEquals("A simple test API.", $this->result['namespaces']['PHPDocParser\Test\Apis']['classes']['SimpleTestApi']['doc']['title']);
+    $this->assertEquals("A simple test API.", $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['SimpleTestApi']['doc']['title']);
   }
 
   function testCommentDescription() {
-    $this->assertEquals("This is an extended description.", $this->result['namespaces']['PHPDocParser\Test\Apis']['classes']['SimpleTestApi']['doc']['description']);
+    $this->assertEquals("This is an extended description.", $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['SimpleTestApi']['doc']['description']);
   }
 
   function testCommentParams() {
-    $this->assertEquals(array(), $this->result['namespaces']['PHPDocParser\Test\Apis']['classes']['SimpleTestApi']['doc']['params']);
+    $this->assertEquals(array(), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['SimpleTestApi']['doc']['params']);
   }
 
 }

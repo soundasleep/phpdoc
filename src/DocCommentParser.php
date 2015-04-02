@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPDocParser;
+namespace PHPDoc;
 
 class DocCommentParser {
 

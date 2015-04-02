@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPDocParser;
+namespace PHPDoc;
 
 use Monolog\Logger;
 
@@ -16,7 +16,7 @@ class Collector {
   function __construct(Logger $logger) {
     $this->logger = $logger;
   }
-  
+
   public function parse($dir) {
     $this->result = array();
     $this->iterate($dir);

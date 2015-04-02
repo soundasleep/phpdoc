@@ -1,9 +1,9 @@
 <?php
 
-namespace PHPDocParser\Test;
+namespace PHPDoc\Test;
 
-use PHPDocParser\MyLogger;
-use PHPDocParser\Parser;
+use PHPDoc\MyLogger;
+use PHPDoc\Parser;
 
 class MultipleParamsTest extends DocCommentTest {
 
@@ -12,15 +12,15 @@ class MultipleParamsTest extends DocCommentTest {
   }
 
   function testNamespace() {
-    $this->assertTrue(isset($this->result['namespaces']['PHPDocParser\Test\Apis']));
+    $this->assertTrue(isset($this->result['namespaces']['PHPDoc\Test\Apis']));
   }
 
   function testCommentTitle() {
-    $this->assertEquals("An advanced test API.", $this->result['namespaces']['PHPDocParser\Test\Apis']['classes']['MultipleParamsApi']['doc']['title']);
+    $this->assertEquals("An advanced test API.", $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['doc']['title']);
   }
 
   function testCommentDescription() {
-    $this->assertEquals("This is an extended description.\nIt spans multiple lines.", $this->result['namespaces']['PHPDocParser\Test\Apis']['classes']['MultipleParamsApi']['doc']['description']);
+    $this->assertEquals("This is an extended description.\nIt spans multiple lines.", $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['doc']['description']);
   }
 
   function testCommentParams() {
@@ -28,13 +28,13 @@ class MultipleParamsTest extends DocCommentTest {
       'currency' => 'the currency to use',
       'foo' => 'another parameter',
       'bar' => 'another parameter across multiple lines',
-    ), $this->result['namespaces']['PHPDocParser\Test\Apis']['classes']['MultipleParamsApi']['doc']['params']);
+    ), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['doc']['params']);
   }
 
   function testCommentSee() {
     $this->assertEquals(array(
       'AdvancedTestApi',
-    ), $this->result['namespaces']['PHPDocParser\Test\Apis']['classes']['MultipleParamsApi']['doc']['see']);
+    ), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['doc']['see']);
   }
 
 }

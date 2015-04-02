@@ -2,8 +2,8 @@
 
 require(__DIR__ . "/vendor/autoload.php");
 
-use PHPDocParser\Collector;
-use PHPDocParser\MyLogger;
+use PHPDoc\Collector;
+use PHPDoc\MyLogger;
 
 $logger = new \Monolog\Logger("test");
 $logger->pushHandler(new MyLogger());
