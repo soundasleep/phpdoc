@@ -3,11 +3,15 @@
   "description": "Parse PHP documentation blocks",
   "autoload": {
     "psr-4": {
-      "PHPDocParser\\": "src"
+      "PHPDocParser\\": "src",
+      "PHPDocParser\\Test\\": "test"
     }
   },
   "require": {
     "nikic/php-parser": "~1.0.2",
     "monolog/monolog": "~1.13"
+  },
+  "require-dev": {
+    "soundasleep/component-tests": "dev-master"
   }
 }
