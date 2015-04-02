@@ -13,7 +13,9 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
   var $result;
 
   // current state
-  var $current_namespace;
+  var $current_namespace = null;
+  var $current_class = null;
+  var $current_uses = array();
 
   public function __construct(Logger $logger) {
     $this->logger = $logger;
@@ -54,7 +56,15 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
       $this->addNamespace(array(
         'namespace' => $node->name->toString(),
       ));
-      $this->current_namespace = $node->name->toString();
+    }
+
+    if ($node instanceof \PhpParser\Node\Stmt\Use_) {
+      foreach ($node->uses as $use) {
+        $this->addUse(array(
+          'name' => $use->name,
+          'alias' => $use->alias,
+        ));
+      }
     }
 
     if ($node instanceof \PhpParser\Node\Stmt\Class_) {
@@ -64,15 +74,17 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
         'implements' => $node->implements,
         'abstract' => $node->isAbstract(),
         'final' => $node->isFinal(),
+        'comment' => $node->getDocComment(),
       ));
     }
 
     $this->logger->info(get_class($node));
-    // print_r($node);
   }
 
   function addNamespace($data) {
     $this->current_namespace = $data['namespace'];
+    $this->current_class = null;
+    $this->current_uses = array();
 
     if (!isset($result['namespaces'][$this->current_namespace])) {
       $this->result['namespaces'][$this->current_namespace] = array(
@@ -83,7 +95,9 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
 
   function addClass($data) {
     $formatted = $data;
+    $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
     $formatted['extends'] = ($data['extends'] ? $data['extends']->toString() : null);
+    $formatted['uses'] = $this->current_uses;
 
     $formatted['implements'] = array();
     foreach ($data['implements'] as $i) {
@@ -93,6 +107,12 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     $this->result['namespaces'][$this->current_namespace]['classes'][$data['name']] = $formatted;
 
     $this->current_class = $data['name'];    
+    $this->current_classes[] = $data['name'];
+    print_r($this->current_classes);
+  }
+
+  function addUse($use) {
+    $this->current_uses[$use['alias']] = $use['name']->toString();
   }
 
 }
