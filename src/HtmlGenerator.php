@@ -26,19 +26,25 @@ class HtmlGenerator {
 
     // TODO delete all files within it?
 
-    $this->generateFile("index");
+    $this->generateFile("index", "index");
+    foreach ($this->database['namespaces'] as $namespace => $data) {
+      $this->generateFile("namespace", "namespace_" . $this->escape($namespace), array('namespace' => $namespace));
+    }
 
     // copy over CSS
     copy(__DIR__ . "/../templates/default.css", $this->output . "default.css");
   }
 
-  function generateFile($template) {
-    $_file = $this->output . $template . ".html";
+  function generateFile($template, $filename, $args = array()) {
+    $_file = $this->output . $filename . ".html";
     $this->logger->info("Generating '$_file'...");
 
     switch ($template) {
       case "index":
         $title = "PHPDoc - " . $this->options['project_name'];
+        break;
+      case "namespace":
+        $title = "PHPDoc - " . $args['namespace'];
         break;
       default:
         $title = "PHPDoc";
@@ -48,6 +54,9 @@ class HtmlGenerator {
 
     // lets use PHP to make our lives easier!
     $database = $this->database;
+    foreach ($args as $key => $value) {
+      $$key = $value;
+    }
     require(__DIR__ . "/../templates/header.php");
     require(__DIR__ . "/../templates/" . $template . ".php");
     require(__DIR__ . "/../templates/footer.php");
@@ -61,6 +70,25 @@ class HtmlGenerator {
 
   function linkTo($url, $title, $classes = array()) {
     return "<a href=\"" . htmlspecialchars($url) . "\" class=\"" . implode(" ", $classes) . "\">" . htmlspecialchars($title) . "</a>";
+  }
+
+  function namespaceLink($namespace) {
+    return $this->linkTo("namespace_" . $this->escape($namespace) . ".html", $namespace, array('namespace'));
+  }
+
+  function escape($s) {
+    return preg_replace("#[^a-zA-Z0-9_]#", "_", $s);
+  }
+
+  function plural($n, $s, $ss = false) {
+    if ($ss == false) {
+      $ss = $s . "s";
+    }
+    if ((int) $n == 1) {
+      return number_format($n) . " " . $s;
+    } else {
+      return number_format($n) . " " . $ss;
+    }
   }
 
 }
