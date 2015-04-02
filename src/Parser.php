@@ -32,6 +32,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     $this->file = $file;
     $this->parser = new \PhpParser\Parser(new \PhpParser\Lexer\Emulative);
     $this->traverser = new \PhpParser\NodeTraverser;
+    $this->doc_comment_parser = new DocCommentParser();
 
     // add your visitor
     $this->traverser->addVisitor($this);
@@ -83,6 +84,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
         'abstract' => $node->isAbstract(),
         'final' => $node->isFinal(),
         'comment' => $node->getDocComment(),
+        'doc' => $this->doc_comment_parser->parse($node->getDocComment()),
         'line' => $node->getLine(),
         'file' => $this->file,
       ));
@@ -101,6 +103,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
         'final' => $node->isFinal(),
         'static' => $node->isStatic(),
         'comment' => $node->getDocComment(),
+        'doc' => $this->doc_comment_parser->parse($node->getDocComment()),
         'line' => $node->getLine(),
         'file' => $this->file,
       ));
@@ -119,12 +122,13 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
         'private' => $this->last_property->isPrivate(),
         'static' => $this->last_property->isStatic(),
         'comment' => $node->getDocComment(),
+        'doc' => $this->doc_comment_parser->parse($node->getDocComment()),
         'line' => $node->getLine(),
         'file' => $this->file,
       ));
     }
 
-    $this->logger->info(get_class($node));
+    // $this->logger->info(get_class($node));
   }
 
   function addNamespace($data) {
@@ -155,7 +159,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
 
     $this->result['namespaces'][$this->current_namespace]['classes'][$data['name']] = $formatted;
 
-    $this->current_class = $data['name'];    
+    $this->current_class = $data['name'];
   }
 
   function addUse($use) {
@@ -165,7 +169,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
   function addClassMethod($data) {
     $formatted = $data;
     $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
-    $formatted['default'] = $this->formatDefault($data['default']);
+    $formatted['default'] = isset($data['default']) ? $this->formatDefault($data['default']) : null;
 
     $formatted['params'] = array();
     foreach ($data['params'] as $param) {
@@ -192,7 +196,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
   function addClassProperty($data) {
     $formatted = $data;
     $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
-    $formatted['default'] = $this->formatDefault($data['default']);
+    $formatted['default'] = isset($data['default']) ? $this->formatDefault($data['default']) : null;
 
     $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['properties'][$data['name']] = $formatted;
   }
