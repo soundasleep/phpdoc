@@ -13,6 +13,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
   var $result;
 
   // current state
+  var $file = null;
   var $current_namespace = null;
   var $current_class = null;
   var $current_uses = array();
@@ -21,9 +22,13 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     $this->logger = $logger;
   }
 
+  /**
+   * Load the given file.
+   */
   public function load($file) {
     $this->logger->info("Parsing file '$file'");
 
+    $this->file = $file;
     $this->parser = new \PhpParser\Parser(new \PhpParser\Lexer\Emulative);
     $this->traverser = new \PhpParser\NodeTraverser;
 
@@ -55,6 +60,8 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     if ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
       $this->addNamespace(array(
         'namespace' => $node->name->toString(),
+        'line' => $node->getLine(),
+        'file' => $this->file,
       ));
     }
 
@@ -75,6 +82,26 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
         'abstract' => $node->isAbstract(),
         'final' => $node->isFinal(),
         'comment' => $node->getDocComment(),
+        'line' => $node->getLine(),
+        'file' => $this->file,
+      ));
+    }
+
+    if ($node instanceof \PhpParser\Node\Stmt\ClassMethod) {
+      $this->addClassMethod(array(
+        'byRef' => $node->byRef,
+        'name' => $node->name,
+        'params' => $node->params,
+        'returnType' => $node->returnType,
+        'public' => $node->isPublic(),
+        'protected' => $node->isProtected(),
+        'private' => $node->isPrivate(),
+        'abstract' => $node->isAbstract(),
+        'final' => $node->isFinal(),
+        'static' => $node->isStatic(),
+        'comment' => $node->getDocComment(),
+        'line' => $node->getLine(),
+        'file' => $this->file,
       ));
     }
 
@@ -98,6 +125,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
     $formatted['extends'] = ($data['extends'] ? $data['extends']->toString() : null);
     $formatted['uses'] = $this->current_uses;
+    $formatted['methods'] = array();
 
     $formatted['implements'] = array();
     foreach ($data['implements'] as $i) {
@@ -107,12 +135,36 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     $this->result['namespaces'][$this->current_namespace]['classes'][$data['name']] = $formatted;
 
     $this->current_class = $data['name'];    
-    $this->current_classes[] = $data['name'];
-    print_r($this->current_classes);
   }
 
   function addUse($use) {
     $this->current_uses[$use['alias']] = $use['name']->toString();
+  }
+
+  function addClassMethod($data) {
+    $formatted = $data;
+    $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
+
+    $formatted['params'] = array();
+    foreach ($data['params'] as $param) {
+      // do we have a 'uses' reference for this type?
+      if ($param->type) {
+        foreach ($this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['uses'] as $alias => $name) {
+          if ($alias === (string) $param->type) {
+            $param->type = $name;
+          }
+        }
+      }
+
+      $formatted['params'][$param->name] = array(
+        'type' => $param->type ? (string) $param->type : null,
+        'byRef' => $param->byRef,
+        'variadic' => $param->variadic,
+        'default' => $param->default,
+      );
+    }
+
+    $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['methods'][$data['name']] = $formatted;
   }
 
 }
