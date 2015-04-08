@@ -28,6 +28,14 @@ class DocMethod extends AbstractDocElement {
     throw new \Exception("DocMethods are not generated to HTML");
   }
 
+  function getDatabase() {
+    return $this->getClass()->getDatabase();
+  }
+
+  function getNamespace() {
+    return $this->getClass()->getNamespace();
+  }
+
   function getFilename() {
     return "class_" . $this->escape($this->getClass()->getNamespace()->getName()) . "_" . $this->escape($this->getClass()->getName()) . ".html#" . $this->escape($this->getName());
   }

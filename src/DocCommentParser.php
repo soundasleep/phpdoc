@@ -74,7 +74,7 @@ class DocCommentParser {
             $result[$bits[1]] = $bits[2];
             break;
           case 2:
-            $result[] = $bits[1];
+            $result[$bits[1]] = false;
             break;
         }
       }

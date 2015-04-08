@@ -11,6 +11,14 @@ class DocClass extends AbstractDocElement {
 
   var $methods = array();
 
+  /**
+   * Constructor.
+   * @param $name the name of the class
+   * @param $data the data for the class, in JSON format
+   * @throws InvalidArgumentException if {@code $name} is empty
+   * @see DocMethod
+   * @see DocNamespace parent class
+   */
   function __construct($name, $data) {
     if (!$name) {
       throw new \InvalidArgumentException("'$name' is not a valid class name");
