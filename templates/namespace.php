@@ -9,10 +9,10 @@ if ($namespaces) { ?>
 
 <ul>
 <?php
-  foreach ($namespaces as $namespace) {
+  foreach ($namespaces as $child) {
     echo "<li>";
-    echo $this->linkTo($namespace->getFilename(), $namespace->getName());
-    echo " - " . $this->plural(count($namespace->getClasses()), "class", "classes");
+    echo $this->linkTo($child->getFilename(), $child->getName());
+    echo " - " . $this->plural(count($child->getClasses()), "class", "classes");
     echo "</li>";
   }
 ?>

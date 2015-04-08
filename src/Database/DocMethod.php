@@ -32,4 +32,12 @@ class DocMethod extends AbstractDocElement {
     return "class_" . $this->escape($this->getClass()->getNamespace()->getName()) . "_" . $this->escape($this->getClass()->getName()) . ".html#" . $this->escape($this->getName());
   }
 
+  function getPrintableName() {
+    $params = array();
+    foreach ($this->data['params'] as $name => $data) {
+      $params[] = '$' . $name;
+    }
+    return $this->getName() . "(" . implode(", ", $params) . ")";
+  }
+
 }
