@@ -8,6 +8,10 @@ namespace PHPDoc\Database;
 class DocMethod extends AbstractDocElement {
 
   function __construct($name, $data) {
+    if (!$name) {
+      throw new \InvalidArgumentException("'$name' is not a valid method name");
+    }
+
     $this->name = $name;
     $this->data = $data;
   }

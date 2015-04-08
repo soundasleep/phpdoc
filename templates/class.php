@@ -22,3 +22,30 @@
 } ?>
   </tbody>
 </table>
+
+<?php
+
+$inherited = $class->getInheritedMethods($this->logger);
+if ($inherited) { ?>
+
+<h2>Inherited Methods</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<?php foreach ($inherited as $method) {
+  echo "<tr>";
+  echo "<td>" . $this->linkTo($method->getFilename(), $method->getName()) . "</td>";
+  echo "<td>" . $method->getDocTitle() . "</td>";
+  echo "</tr>";
+} ?>
+  </tbody>
+</table>
+
+
+<?php } ?>

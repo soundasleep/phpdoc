@@ -10,6 +10,10 @@ class DocNamespace extends AbstractDocElement {
   var $classes = array();
 
   function __construct($name, $data) {
+    if (!$name) {
+      throw new \InvalidArgumentException("'$name' is not a valid namespace name");
+    }
+
     $this->name = $name;
     $this->data = $data;
 
@@ -33,6 +37,10 @@ class DocNamespace extends AbstractDocElement {
 
   function setDatabase($database) {
     $this->database = $database;
+  }
+
+  function getDatabase() {
+    return $this->database;
   }
 
   function getTitle($options) {

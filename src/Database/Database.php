@@ -2,6 +2,8 @@
 
 namespace PHPDoc\Database;
 
+use Monolog\Logger;
+
 /**
  * Represents an intelligent documentation database that can be
  * queried as necessary.
@@ -38,6 +40,32 @@ class Database extends AbstractDocElement {
 
   function getFilename() {
     return "index.html";
+  }
+
+  /**
+   * Find the given class, or return {@code null} if none can be found.
+   */
+  function findClass($fqn, Logger $logger) {
+    // split
+    $bits = explode("\\", $fqn);
+    $ns = array();
+    for ($i = 0; $i < count($bits) - 1; $i++) {
+      $ns[] = $bits[$i];
+    }
+    $relative_name = $bits[count($bits)-1];
+    $ns = implode("\\", $ns);
+
+    foreach ($this->getNamespaces() as $namespace) {
+      if ($namespace->getName() == $ns) {
+        foreach ($namespace->getClasses() as $class) {
+          if ($class->getName() == $relative_name) {
+            return $class;
+          }
+        }
+      }
+    }
+
+    return null;
   }
 
 }

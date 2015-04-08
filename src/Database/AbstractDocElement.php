@@ -7,6 +7,10 @@ namespace PHPDoc\Database;
  */
 abstract class AbstractDocElement implements Visible {
 
+  /**
+   * Make the given string filename-safe.
+   * @param $s any arbitrary string
+   */
   function escape($s) {
     return preg_replace("#[^a-zA-Z0-9_]#", "_", $s);
   }
@@ -25,6 +29,16 @@ abstract class AbstractDocElement implements Visible {
     }
     // we can't find anything
     return null;
+  }
+
+  var $warnings;
+
+  function addWarning($s) {
+    $this->warnings[] = $s;
+  }
+
+  function getWarnings() {
+    return $this->warnings;
   }
 
 }
