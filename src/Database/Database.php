@@ -26,7 +26,7 @@ class Database extends AbstractDocElement {
   }
 
   function addNamespace($ns) {
-    $this->namespaces[] = $ns;
+    $this->namespaces[$ns->getName()] = $ns;
     $ns->setDatabase($this);
   }
 

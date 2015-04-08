@@ -51,4 +51,16 @@ class DocNamespace extends AbstractDocElement {
     return "namespace_" . $this->escape($this->getName()) . ".html";
   }
 
+  function getChildNamespaces() {
+    $result = array();
+
+    foreach ($this->getDatabase()->getNamespaces() as $namespace) {
+      if (substr($namespace->getName(), 0, strlen($this->getName()) + 1) == $this->getName() . "\\") {
+        $result[$namespace->getName()] = $namespace;
+      }
+    }
+
+    return $result;
+  }
+
 }
