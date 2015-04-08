@@ -76,6 +76,10 @@ class HtmlGenerator {
     return $this->linkTo("namespace_" . $this->escape($namespace) . ".html", $namespace, array('namespace'));
   }
 
+  function classLink($namespace, $class) {
+    return $this->linkTo("class_" . $this->escape($namespace) . "_" . $this->escape($class) . ".html", $class, array('class'));
+  }
+
   function escape($s) {
     return preg_replace("#[^a-zA-Z0-9_]#", "_", $s);
   }
