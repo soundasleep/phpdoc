@@ -1,4 +1,4 @@
-<h1><?php echo $this->namespaceLink($namespace); ?> Namespace</h1>
+<h1><?php echo $this->linkTo($namespace->getFilename(), $namespace->getName()); ?> Namespace</h1>
 
 <h2>Classes</h2>
 
@@ -10,10 +10,10 @@
     </tr>
   </thead>
   <tbody>
-<?php foreach ($database['namespaces'][$namespace]['classes'] as $class => $data) {
+<?php foreach ($namespace->getClasses() as $class) {
   echo "<tr>";
-  echo "<td>" . $this->classLink($namespace, $class) . "</td>";
-  echo "<td>" . $data['doc']['title'] . "</td>";
+  echo "<td>" . $this->linkTo($class->getFilename(), $class->getName()) . "</td>";
+  echo "<td>" . $class->getDocTitle() . "</td>";
   echo "</tr>";
 } ?>
   </tbody>

@@ -1,4 +1,8 @@
-<h1><?php echo $this->namespaceLink($namespace); ?> \\ <?php echo $this->classLink($namespace, $class); ?> Class</h1>
+<h1>
+  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getName()); ?>
+  \
+  <?php echo $this->linkTo($class->getFilename(), $class->getName()); ?>
+</h1>
 
 <h2>Methods</h2>
 
@@ -10,10 +14,10 @@
     </tr>
   </thead>
   <tbody>
-<?php foreach ($database['namespaces'][$namespace]['classes'][$class]['methods'] as $method => $data) {
+<?php foreach ($class->getMethods() as $method) {
   echo "<tr>";
-  echo "<td>" . $this->methodLink($namespace, $class, $method) . "(" . implode(", ", array_keys($data['params'])) . ")</td>";
-  echo "<td>" . $data['doc']['title'] . "</td>";
+  echo "<td>" . $this->linkTo($method->getFilename(), $method->getName()) . "</td>";
+  echo "<td>" . $method->getDocTitle() . "</td>";
   echo "</tr>";
 } ?>
   </tbody>

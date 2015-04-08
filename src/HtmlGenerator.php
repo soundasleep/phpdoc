@@ -2,6 +2,8 @@
 
 namespace PHPDoc;
 
+use PHPDoc\Database\Database;
+
 class HtmlGenerator {
 
   var $database;
@@ -9,7 +11,7 @@ class HtmlGenerator {
   var $logger;
   var $output;
 
-  function __construct($database, $options, $logger, $output) {
+  function __construct(Database $database, $options, $logger, $output) {
     $this->database = $database;
     $this->options = $options;
     $this->logger = $logger;
@@ -26,40 +28,31 @@ class HtmlGenerator {
 
     // TODO delete all files within it?
 
-    $this->generateFile("index", "index");
+    $this->generateFile("index", $this->database);
 
-    // generate all namespaces
-    foreach ($this->database['namespaces'] as $namespace => $data) {
-      $this->generateFile("namespace", "namespace_" . $this->escape($namespace), array('namespace' => $namespace));
+    foreach ($this->database->getNamespaces() as $namespace) {
+      $this->generateFile("namespace", $namespace, array(
+        'namespace' => $namespace,
+      ));
 
-      // generate all classes
-      foreach ($data['classes'] as $class => $class_data) {
-        $this->generateFile("class", "class_" . $this->escape($namespace) . "_" . $this->escape($class), array('namespace' => $namespace, 'class' => $class));
+      foreach ($namespace->getClasses() as $class) {
+        $this->generateFile("class", $class, array(
+          'namespace' => $namespace,
+          'class' => $class,
+        ));
       }
-
     }
 
     // copy over CSS
     copy(__DIR__ . "/../templates/default.css", $this->output . "default.css");
   }
 
-  function generateFile($template, $filename, $args = array()) {
-    $_file = $this->output . $filename . ".html";
-    $this->logger->info("Generating '$_file'...");
+  function generateFile($template, $object, $args = array()) {
+    $filename = $object->getFilename();
+    $title = $object->getTitle($this->options);
 
-    switch ($template) {
-      case "index":
-        $title = "PHPDoc - " . $this->options['project_name'];
-        break;
-      case "namespace":
-        $title = "PHPDoc - " . $args['namespace'];
-        break;
-      case "class":
-        $title = "PHPDoc - " . $args['namespace'] . "\\" . $args['class'];
-        break;
-      default:
-        $title = "PHPDoc";
-    }
+    $_file = $this->output . $filename;
+    $this->logger->info("Generating '$_file'...");
 
     ob_start();
 
@@ -81,22 +74,6 @@ class HtmlGenerator {
 
   function linkTo($url, $title, $classes = array()) {
     return "<a href=\"" . htmlspecialchars($url) . "\" class=\"" . implode(" ", $classes) . "\">" . htmlspecialchars($title) . "</a>";
-  }
-
-  function namespaceLink($namespace) {
-    return $this->linkTo("namespace_" . $this->escape($namespace) . ".html", $namespace, array('namespace'));
-  }
-
-  function classLink($namespace, $class) {
-    return $this->linkTo("class_" . $this->escape($namespace) . "_" . $this->escape($class) . ".html", $class, array('class'));
-  }
-
-  function methodLink($namespace, $class, $method) {
-    return $this->linkTo("class_" . $this->escape($namespace) . "_" . $this->escape($class) . ".html#" . $this->escape($method), $method, array('method'));
-  }
-
-  function escape($s) {
-    return preg_replace("#[^a-zA-Z0-9_]#", "_", $s);
   }
 
   function plural($n, $s, $ss = false) {

@@ -5,6 +5,7 @@ require(__DIR__ . "/vendor/autoload.php");
 use PHPDoc\Collector;
 use PHPDoc\MyLogger;
 use PHPDoc\HtmlGenerator;
+use PHPDoc\Database\Database;
 
 $logger = new \Monolog\Logger("test");
 $logger->pushHandler(new MyLogger());
@@ -19,6 +20,7 @@ $options = array(
   'project_name' => 'Untitled',
 );
 
-$html = new HtmlGenerator($result, $options, $logger, __DIR__ . "/docs/");
+$database = new Database("untitled", $result);
+$html = new HtmlGenerator($database, $options, $logger, __DIR__ . "/docs/");
 $html->generate();
 
