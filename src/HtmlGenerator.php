@@ -27,8 +27,16 @@ class HtmlGenerator {
     // TODO delete all files within it?
 
     $this->generateFile("index", "index");
+
+    // generate all namespaces
     foreach ($this->database['namespaces'] as $namespace => $data) {
       $this->generateFile("namespace", "namespace_" . $this->escape($namespace), array('namespace' => $namespace));
+
+      // generate all classes
+      foreach ($data['classes'] as $class => $class_data) {
+        $this->generateFile("class", "class_" . $this->escape($namespace) . "_" . $this->escape($class), array('namespace' => $namespace, 'class' => $class));
+      }
+
     }
 
     // copy over CSS
@@ -45,6 +53,9 @@ class HtmlGenerator {
         break;
       case "namespace":
         $title = "PHPDoc - " . $args['namespace'];
+        break;
+      case "class":
+        $title = "PHPDoc - " . $args['namespace'] . "\\" . $args['class'];
         break;
       default:
         $title = "PHPDoc";
@@ -78,6 +89,10 @@ class HtmlGenerator {
 
   function classLink($namespace, $class) {
     return $this->linkTo("class_" . $this->escape($namespace) . "_" . $this->escape($class) . ".html", $class, array('class'));
+  }
+
+  function methodLink($namespace, $class, $method) {
+    return $this->linkTo("class_" . $this->escape($namespace) . "_" . $this->escape($class) . ".html#" . $this->escape($method), $method, array('method'));
   }
 
   function escape($s) {
