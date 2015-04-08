@@ -4,6 +4,11 @@
   <?php echo $this->linkTo($class->getFilename(), $class->getName()); ?>
 </h1>
 
+<?php
+$doc_reference = $class;
+require(__DIR__ . "/_doc.php");
+?>
+
 <h2>Method Summary</h2>
 
 <table>
@@ -17,7 +22,7 @@
 <?php foreach ($class->getMethods() as $method) {
   echo "<tr>";
   echo "<td>" . $this->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
-  echo "<td>" . $method->getDocTitle() . "</td>";
+  echo "<td>" . $method->getDoc('title') . "</td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -41,7 +46,7 @@ if ($inherited) { ?>
 <?php foreach ($inherited as $method) {
   echo "<tr>";
   echo "<td>" . $this->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
-  echo "<td>" . $method->getDocTitle() . " <i>(from " . $this->linkTo($method->getFilename(), $method->getClass()->getName()) . ")</i></td>";
+  echo "<td>" . $method->getDoc('title') . " <i>(from " . $this->linkTo($method->getFilename(), $method->getClass()->getName()) . ")</i></td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -57,23 +62,8 @@ if ($inherited) { ?>
 
 <blockquote>
 <?php
-if ($method->getDocTitle()) {
-  echo "<p>" . $method->getDocTitle() . "</p>";
-}
-if ($method->getDocDescription()) {
-  echo "<p>" . str_replace("\n", "</p><p>", $method->getDocDescription()) . "</p>";
-}
-
-echo "<dl>";
-if ($method->getDocParams()) {
-  echo "<dt>Parameters:</dt>";
-  echo "<dd>";
-  foreach ($method->getDocParams() as $param => $description) {
-    echo "<code>" . $param . "</code> - " . $description;
-  }
-  echo "</dd>";
-}
-echo "</dl>";
+$doc_reference = $method;
+require(__DIR__ . "/_doc.php");
 ?>
 </blockquote>
 

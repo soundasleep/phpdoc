@@ -33,7 +33,7 @@ if ($namespaces) { ?>
 <?php foreach ($namespace->getClasses() as $class) {
   echo "<tr>";
   echo "<td>" . $this->linkTo($class->getFilename(), $class->getName()) . "</td>";
-  echo "<td>" . $class->getDocTitle() . "</td>";
+  echo "<td>" . $class->getDoc('title') . "</td>";
   echo "</tr>";
 } ?>
   </tbody>

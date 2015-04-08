@@ -23,25 +23,9 @@ abstract class AbstractDocElement implements Visible {
     return $this->data;
   }
 
-  function getDocTitle() {
-    if (isset($this->data['doc']['title']) && $this->data['doc']['title']) {
-      return $this->data['doc']['title'];
-    }
-    // we can't find anything
-    return null;
-  }
-
-  function getDocDescription() {
-    if (isset($this->data['doc']['description']) && $this->data['doc']['description']) {
-      return $this->data['doc']['description'];
-    }
-    // we can't find anything
-    return null;
-  }
-
-  function getDocParams() {
-    if (isset($this->data['doc']['params']) && $this->data['doc']['params']) {
-      return $this->data['doc']['params'];
+  function getDoc($key) {
+    if (isset($this->data['doc'][$key]) && $this->data['doc'][$key]) {
+      return $this->data['doc'][$key];
     }
     // we can't find anything
     return null;
