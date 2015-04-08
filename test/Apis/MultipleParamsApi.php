@@ -20,6 +20,15 @@ use \Apis\Api;
  */
 class MultipleParamsApi extends Api {
 
+  /**
+   * Does something.
+   *
+   * This comment goes
+   * over multiple lines.
+   *
+   * But it should be rendered nicely.
+   * @param $arguments the arguments
+   */
   function getJSON($arguments) {
     return array();
   }

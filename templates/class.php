@@ -4,7 +4,7 @@
   <?php echo $this->linkTo($class->getFilename(), $class->getName()); ?>
 </h1>
 
-<h2>Methods</h2>
+<h2>Method Summary</h2>
 
 <table>
   <thead>
@@ -28,7 +28,7 @@
 $inherited = $class->getInheritedMethods($this->logger);
 if ($inherited) { ?>
 
-<h2>Inherited Methods</h2>
+<h2>Inherited Method Summary</h2>
 
 <table>
   <thead>
@@ -47,5 +47,34 @@ if ($inherited) { ?>
   </tbody>
 </table>
 
+<?php } ?>
+
+<?php foreach ($class->getMethods() as $method) { ?>
+
+<hr>
+
+<h3><?php echo $method->getPrintableName(); ?></h3>
+
+<blockquote>
+<?php
+if ($method->getDocTitle()) {
+  echo "<p>" . $method->getDocTitle() . "</p>";
+}
+if ($method->getDocDescription()) {
+  echo "<p>" . str_replace("\n", "</p><p>", $method->getDocDescription()) . "</p>";
+}
+
+echo "<dl>";
+if ($method->getDocParams()) {
+  echo "<dt>Parameters:</dt>";
+  echo "<dd>";
+  foreach ($method->getDocParams() as $param => $description) {
+    echo "<code>" . $param . "</code> - " . $description;
+  }
+  echo "</dd>";
+}
+echo "</dl>";
+?>
+</blockquote>
 
 <?php } ?>
