@@ -90,6 +90,17 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
       ));
     }
 
+    if ($node instanceof \PhpParser\Node\Stmt\Interface_) {
+      $this->addInterface(array(
+        'name' => $node->name,
+        'extends' => $node->extends,
+        'comment' => $node->getDocComment(),
+        'doc' => $this->doc_comment_parser->parse($node->getDocComment()),
+        'line' => $node->getLine(),
+        'file' => $this->file,
+      ));
+    }
+
     if ($node instanceof \PhpParser\Node\Stmt\ClassMethod) {
       $this->addClassMethod(array(
         'byRef' => $node->byRef,
@@ -134,6 +145,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
   function addNamespace($data) {
     $this->current_namespace = $data['namespace'];
     $this->current_class = null;
+    $this->current_interface = null;
     $this->last_property = null;
     $this->current_uses = array();
 
@@ -160,6 +172,26 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     $this->result['namespaces'][$this->current_namespace]['classes'][$data['name']] = $formatted;
 
     $this->current_class = $data['name'];
+    $this->current_interface = null;
+  }
+
+  function addInterface($data) {
+    $formatted = $data;
+    $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
+    unset($formatted['extends']);
+    $formatted['uses'] = $this->current_uses;
+    $formatted['methods'] = array();
+    $formatted['properties'] = array();
+
+    $formatted['implements'] = array();
+    foreach ($data['extends'] as $i) {
+      $formatted['implements'][] = $i;
+    }
+
+    $this->result['namespaces'][$this->current_namespace]['interfaces'][$data['name']] = $formatted;
+
+    $this->current_interface = $data['name'];
+    $this->current_class = null;
   }
 
   function addUse($use) {
@@ -167,6 +199,12 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
   }
 
   function addClassMethod($data) {
+    if ($this->current_class) {
+      $ref = $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class];
+    } else {
+      $ref = $this->result['namespaces'][$this->current_namespace]['interfaces'][$this->current_interface];
+    }
+
     $formatted = $data;
     $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
     $formatted['default'] = isset($data['default']) ? $this->formatDefault($data['default']) : null;
@@ -175,7 +213,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     foreach ($data['params'] as $param) {
       // do we have a 'uses' reference for this type?
       if ($param->type) {
-        foreach ($this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['uses'] as $alias => $name) {
+        foreach ($ref['uses'] as $alias => $name) {
           if ($alias === (string) $param->type) {
             $param->type = $name;
           }
@@ -190,15 +228,29 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
       );
     }
 
-    $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['methods'][$data['name']] = $formatted;
+    if ($this->current_class) {
+      $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['methods'][$data['name']] = $formatted;
+    } else {
+      $this->result['namespaces'][$this->current_namespace]['interfaces'][$this->current_interface]['methods'][$data['name']] = $formatted;
+    }
   }
 
   function addClassProperty($data) {
+    if ($this->current_class) {
+      $ref = $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class];
+    } else {
+      $ref = $this->result['namespaces'][$this->current_namespace]['interfaces'][$this->current_interface];
+    }
+
     $formatted = $data;
     $formatted['comment'] = ($data['comment'] ? $data['comment']->getReformattedText() : null);
     $formatted['default'] = isset($data['default']) ? $this->formatDefault($data['default']) : null;
 
-    $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['properties'][$data['name']] = $formatted;
+    if ($this->current_class) {
+      $this->result['namespaces'][$this->current_namespace]['classes'][$this->current_class]['properties'][$data['name']] = $formatted;
+    } else {
+      $this->result['namespaces'][$this->current_namespace]['interfaces'][$this->current_interface]['properties'][$data['name']] = $formatted;
+    }
   }
 
   function formatDefault($default) {
