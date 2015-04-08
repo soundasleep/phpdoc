@@ -41,7 +41,7 @@ if ($inherited) { ?>
 <?php foreach ($inherited as $method) {
   echo "<tr>";
   echo "<td>" . $this->linkTo($method->getFilename(), $method->getName()) . "</td>";
-  echo "<td>" . $method->getDocTitle() . "</td>";
+  echo "<td>" . $method->getDocTitle() . " <i>(from " . $this->linkTo($method->getFilename(), $method->getClass()->getName()) . ")</i></td>";
   echo "</tr>";
 } ?>
   </tbody>
