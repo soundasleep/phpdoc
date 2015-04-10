@@ -10,7 +10,7 @@ class DocCommentParser {
       'description' => $this->getDescription($comment),
       'params' => $this->getParams($comment),
       'see' => $this->getSee($comment),
-      'returns' => $this->getReturns($comment),
+      'return' => $this->getReturn($comment),
       'throws' => $this->getThrows($comment),
     );
   }
@@ -49,7 +49,13 @@ class DocCommentParser {
 
   function getTitle($comment) {
     $lines = $this->getLines($comment);
-    return isset($lines[0]) ? $lines[0] : null;
+    if (isset($lines[0])) {
+      if (substr($lines[0], 0, 1) !== "@") {
+        // don't use @tags as title
+        return $lines[0];
+      }
+    }
+    return null;
   }
 
   function getDescription($comment) {
@@ -66,7 +72,7 @@ class DocCommentParser {
   function getHash($tag_name, $comment) {
     $lines = $this->getLines($comment);
     $result = array();
-    for ($i = 1; $i < count($lines); $i++) {
+    for ($i = 0; $i < count($lines); $i++) {
       if (substr($lines[$i], 0, strlen("@" . $tag_name)) == "@" . $tag_name) {
         $bits = explode(" ", $lines[$i], 3);
         switch (count($bits)) {
@@ -85,7 +91,7 @@ class DocCommentParser {
   function getList($tag_name, $comment) {
     $lines = $this->getLines($comment);
     $result = array();
-    for ($i = 1; $i < count($lines); $i++) {
+    for ($i = 0; $i < count($lines); $i++) {
       if (substr($lines[$i], 0, strlen("@" . $tag_name)) == "@" . $tag_name) {
         $bits = explode(" ", $lines[$i], 2);
         $result[] = $bits[1];
@@ -98,8 +104,8 @@ class DocCommentParser {
     return $this->getHash("param", $comment);
   }
 
-  function getReturns($comment) {
-    return $this->getList("returns", $comment);
+  function getReturn($comment) {
+    return $this->getList("return", $comment);
   }
 
   function getSee($comment) {

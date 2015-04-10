@@ -8,4 +8,12 @@ class PHPDocComponentTest extends \ComponentTests\ComponentTest {
     return array(__DIR__ . "/..");
   }
 
+  /**
+   * May be extended by child classes to define a list of path
+   * names that will be excluded by {@link #iterateOver()}.
+   */
+  function getExcludes() {
+    return array("/vendor/", "/docs/", "/.git/", "/.svn/");
+  }
+
 }

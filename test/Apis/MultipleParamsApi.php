@@ -33,6 +33,9 @@ class MultipleParamsApi extends Api {
     return array();
   }
 
+  /**
+   * @return a string
+   */
   function getEndpoint() {
     return "/api/v2/:currency";
   }

@@ -33,8 +33,16 @@ class MultipleParamsTest extends DocCommentTest {
 
   function testCommentSee() {
     $this->assertEquals(array(
-      'AdvancedTestApi',
+      'AdvancedTestApi' => false,
     ), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['doc']['see']);
+  }
+
+  function testCommentWithJustOneTag() {
+    $this->assertFalse(!!$this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['methods']['getEndpoint']['doc']['title'], "The @return tag should not be interpreted as title");
+
+    $this->assertEquals(array(
+      'a string',
+    ), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['methods']['getEndpoint']['doc']['return']);
   }
 
 }
