@@ -41,6 +41,13 @@ class HtmlGenerator {
           'class' => $class,
         ));
       }
+
+      foreach ($namespace->getInterfaces() as $interface) {
+        $this->generateFile("interface", $interface, array(
+          'namespace' => $namespace,
+          'interface' => $interface,
+        ));
+      }
     }
 
     // copy over CSS

@@ -23,6 +23,31 @@ if ($namespaces) { ?>
 
 <?php } ?>
 
+<?php if ($namespace->getInterfaces()) { ?>
+
+<h2>Interfaces</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+<?php foreach ($namespace->getInterfaces() as $class) {
+  echo "<tr>";
+  echo "<td>" . $this->linkTo($class->getFilename(), $class->getName()) . "</td>";
+  echo "<td>" . $class->getDoc('title') . "</td>";
+  echo "</tr>";
+} ?>
+  </tbody>
+</table>
+
+<?php } ?>
+
+<?php if ($namespace->getClasses()) { ?>
+
 <h2>Classes</h2>
 
 <table>
@@ -41,3 +66,5 @@ if ($namespaces) { ?>
 } ?>
   </tbody>
 </table>
+
+<?php } ?>

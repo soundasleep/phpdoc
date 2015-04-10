@@ -8,6 +8,7 @@ namespace PHPDoc\Database;
 class DocNamespace extends AbstractDocElement {
 
   var $classes = array();
+  var $interfaces = array();
 
   function __construct($name, $data) {
     if (!$name) {
@@ -24,6 +25,14 @@ class DocNamespace extends AbstractDocElement {
       $obj = new DocClass($class, $class_data);
       $this->addClass($obj);
     }
+
+    // sort
+    ksort($data['interfaces']);
+
+    foreach ($data['interfaces'] as $interface => $interface_data) {
+      $obj = new DocInterface($interface, $interface_data);
+      $this->addInterface($obj);
+    }
   }
 
   function addClass($class) {
@@ -33,6 +42,15 @@ class DocNamespace extends AbstractDocElement {
 
   function getClasses() {
     return $this->classes;
+  }
+
+  function addInterface($interface) {
+    $this->interfaces[] = $interface;
+    $interface->setNamespace($this);
+  }
+
+  function getInterfaces() {
+    return $this->interfaces;
   }
 
   function setDatabase($database) {

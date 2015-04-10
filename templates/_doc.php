@@ -30,10 +30,10 @@ if ($doc_reference->getDoc('throws')) {
   echo "<dd>";
   foreach ($doc_reference->getDoc('throws') as $thrown_class => $description) {
     // try fqn
-    $discovered_class = $database->findClass($thrown_class, $this->logger);
+    $discovered_class = $database->findClasslike($thrown_class, $this->logger);
     if (!$discovered_class) {
       // try our local namespace
-      $discovered_class = $database->findClass($doc_reference->getNamespace()->getName() . "\\" . $thrown_class, $this->logger);
+      $discovered_class = $database->findClasslike($doc_reference->getNamespace()->getName() . "\\" . $thrown_class, $this->logger);
     }
 
     if ($discovered_class) {
@@ -53,10 +53,10 @@ if ($doc_reference->getDoc('see')) {
   echo "<dd>";
   foreach ($doc_reference->getDoc('see') as $see_class => $description) {
     // try fqn
-    $discovered_class = $database->findClass($see_class, $this->logger);
+    $discovered_class = $database->findClasslike($see_class, $this->logger);
     if (!$discovered_class) {
       // try our local namespace
-      $discovered_class = $database->findClass($doc_reference->getNamespace()->getName() . "\\" . $see_class, $this->logger);
+      $discovered_class = $database->findClasslike($doc_reference->getNamespace()->getName() . "\\" . $see_class, $this->logger);
     }
 
     if ($discovered_class) {

@@ -152,6 +152,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     if (!isset($result['namespaces'][$this->current_namespace])) {
       $this->result['namespaces'][$this->current_namespace] = array(
         'classes' => array(),
+        'interfaces' => array(),
       );
     }
   }
@@ -166,7 +167,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
 
     $formatted['implements'] = array();
     foreach ($data['implements'] as $i) {
-      $formatted['implements'][] = $i;
+      $formatted['implements'][] = $i->toString();
     }
 
     $this->result['namespaces'][$this->current_namespace]['classes'][$data['name']] = $formatted;
@@ -185,7 +186,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
 
     $formatted['implements'] = array();
     foreach ($data['extends'] as $i) {
-      $formatted['implements'][] = $i;
+      $formatted['implements'][] = $i->toString();
     }
 
     $this->result['namespaces'][$this->current_namespace]['interfaces'][$data['name']] = $formatted;

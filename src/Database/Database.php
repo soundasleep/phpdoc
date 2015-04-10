@@ -45,7 +45,7 @@ class Database extends AbstractDocElement {
   /**
    * Find the given class, or return {@code null} if none can be found.
    */
-  function findClass($fqn, Logger $logger) {
+  function findClasslike($fqn, Logger $logger) {
     // split
     $bits = explode("\\", $fqn);
     $ns = array();
@@ -60,6 +60,11 @@ class Database extends AbstractDocElement {
         foreach ($namespace->getClasses() as $class) {
           if ($class->getName() == $relative_name) {
             return $class;
+          }
+        }
+        foreach ($namespace->getInterfaces() as $interface) {
+          if ($interface->getName() == $relative_name) {
+            return $interface;
           }
         }
       }
