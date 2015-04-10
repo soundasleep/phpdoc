@@ -17,4 +17,19 @@ class DocInterface extends DocClasslike {
     return "interface";
   }
 
+  /**
+   * Get all known classes that implement this interface.
+   */
+  function getKnownImplementations(Logger $logger) {
+    $result = array();
+    foreach ($this->getDatabase()->getNamespaces() as $namespace) {
+      foreach ($namespace->getClasses() as $class) {
+        if ($class->doesImplement($this, $logger)) {
+          $result[] = $class;
+        }
+      }
+    }
+    return $result;
+  }
+
 }

@@ -13,11 +13,11 @@
   <dd>
     <?php
     $result = array();
-    foreach ($class->getParentInterfaces($this->logger) as $interface) {
-      if (is_string($interface)) {
-        $result[] = $interface;
+    foreach ($class->getParentInterfaces($this->logger) as $ref) {
+      if (is_string($ref)) {
+        $result[] = $ref;
       } else {
-        $result[] = $this->linkTo($interface->getFilename(), $interface->getName());
+        $result[] = $this->linkTo($ref->getFilename(), $ref->getName());
       }
     }
     echo implode(", ", $result);
@@ -25,14 +25,56 @@
   </dd>
 </dl>
 
+<?php } ?>
+
+<?php if ($class->getKnownImplementations($this->logger)) { ?>
+
+<dl>
+  <dt>All known implementing classes:</dt>
+  <dd>
+    <?php
+    $result = array();
+    foreach ($class->getKnownImplementations($this->logger) as $ref) {
+      if (is_string($ref)) {
+        $result[] = $ref;
+      } else {
+        $result[] = $this->linkTo($ref->getFilename(), $ref->getName());
+      }
+    }
+    echo implode(", ", $result);
+    ?>
+  </dd>
+</dl>
+
+<?php } ?>
+
+<?php if ($class->getDirectSubclasses($this->logger)) { ?>
+
+<dl>
+  <dt>All known direct subclasses:</dt>
+  <dd>
+    <?php
+    $result = array();
+    foreach ($class->getDirectSubclasses($this->logger) as $ref) {
+      if (is_string($ref)) {
+        $result[] = $ref;
+      } else {
+        $result[] = $this->linkTo($ref->getFilename(), $ref->getName());
+      }
+    }
+    echo implode(", ", $result);
+    ?>
+  </dd>
+</dl>
+
+<?php } ?>
+
 <hr>
 
 <?php
 $doc_reference = $class;
 require(__DIR__ . "/_doc.php");
 ?>
-
-<?php } ?>
 
 <hr>
 

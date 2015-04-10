@@ -141,4 +141,20 @@ abstract class DocClasslike extends AbstractDocElement {
     return array_unique($result);
   }
 
+  /**
+   * Get all known classes that implement this interface.
+   * By default, returns empty.
+   */
+  function getKnownImplementations(Logger $logger) {
+    return array();
+  }
+
+  /**
+   * Get all known direct subclasses of this class.
+   * By default, returns empty.
+   */
+  function getDirectSubclasses(Logger $logger) {
+    return array();
+  }
+
 }
