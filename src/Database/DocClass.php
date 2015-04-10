@@ -96,4 +96,8 @@ class DocClass extends AbstractDocElement {
     return $result;
   }
 
+  function getElementType() {
+    return "class";
+  }
+
 }

@@ -1,4 +1,7 @@
-<h1><?php echo $this->linkTo($namespace->getFilename(), $namespace->getName()); ?> Namespace</h1>
+<h1>
+  <small><?php echo $namespace->getModifiers(); ?></small>
+  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getName()); ?> Namespace
+</h1>
 
 <?php
 $namespaces = $namespace->getChildNamespaces();

@@ -68,4 +68,8 @@ class Database extends AbstractDocElement {
     return null;
   }
 
+  function getElementType() {
+    throw new \Exception("Database has no element type");
+  }
+
 }

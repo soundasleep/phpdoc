@@ -63,4 +63,8 @@ class DocNamespace extends AbstractDocElement {
     return $result;
   }
 
+  function getElementType() {
+    return "namespace";
+  }
+
 }

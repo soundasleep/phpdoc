@@ -8,6 +8,12 @@ namespace PHPDoc\Database;
 abstract class AbstractDocElement implements Visible {
 
   /**
+   * @return the type of doc element to display in {@link #getModifiers()},
+   *      e.g. 'function', 'class', 'interface'
+   */
+  abstract function getElementType();
+
+  /**
    * Make the given string filename-safe.
    * @param $s any arbitrary string
    */
@@ -29,6 +35,30 @@ abstract class AbstractDocElement implements Visible {
     }
     // we can't find anything
     return null;
+  }
+
+  function getModifiers() {
+    $modifiers = array();
+    if (isset($this->data['public']) && $this->data['public']) {
+      $modifiers[] = "public";
+    }
+    if (isset($this->data['protected']) && $this->data['protected']) {
+      $modifiers[] = "protected";
+    }
+    if (isset($this->data['private']) && $this->data['private']) {
+      $modifiers[] = "private";
+    }
+    if (isset($this->data['abstract']) && $this->data['abstract']) {
+      $modifiers[] = "abstract";
+    }
+    if (isset($this->data['static']) && $this->data['static']) {
+      $modifiers[] = "static";
+    }
+     if (isset($this->data['final']) && $this->data['final']) {
+      $modifiers[] = "final";
+    }
+    $modifiers[] = $this->getElementType();
+    return implode(" ", $modifiers);
   }
 
   var $warnings;

@@ -1,4 +1,6 @@
 <h1>
+  <small><?php echo $class->getModifiers(); ?></small>
+
   <?php echo $this->linkTo($namespace->getFilename(), $namespace->getName()); ?>
   \
   <?php echo $this->linkTo($class->getFilename(), $class->getName()); ?>
@@ -58,7 +60,10 @@ if ($inherited) { ?>
 
 <hr>
 
-<h3><?php echo $method->getPrintableName(); ?></h3>
+<h3>
+  <small><?php echo $method->getModifiers(); ?></small>
+  <?php echo $method->getPrintableName(); ?>
+</h3>
 
 <blockquote>
 <?php

@@ -48,4 +48,8 @@ class DocMethod extends AbstractDocElement {
     return $this->getName() . "(" . implode(", ", $params) . ")";
   }
 
+  function getElementType() {
+    return "function";
+  }
+
 }
