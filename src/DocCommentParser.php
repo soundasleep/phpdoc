@@ -69,6 +69,9 @@ class DocCommentParser {
     return implode("\n", $result);
   }
 
+  /**
+   * This gets both '@return' and '@returns' etc
+   */
   function getHash($tag_name, $comment) {
     $lines = $this->getLines($comment);
     $result = array();
@@ -88,6 +91,9 @@ class DocCommentParser {
     return $result;
   }
 
+  /**
+   * This gets both '@return' and '@returns' etc
+   */
   function getList($tag_name, $comment) {
     $lines = $this->getLines($comment);
     $result = array();

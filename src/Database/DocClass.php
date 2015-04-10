@@ -69,12 +69,7 @@ class DocClass extends AbstractDocElement {
     $methods = array();
 
     if ($this->data['extends']) {
-      // try fqn
-      $class = $this->getDatabase()->findClass($this->data['extends'], $logger);
-      if (!$class) {
-        // try our local namespace
-        $class = $this->getDatabase()->findClass($this->getNamespace()->getName() . "\\" . $this->data['extends'], $logger);
-      }
+      $class = $this->findClass($this->data['extends'], $logger);
 
       if ($class) {
         $methods = array_merge($methods, $class->getMethods());
@@ -98,6 +93,38 @@ class DocClass extends AbstractDocElement {
 
   function getElementType() {
     return "class";
+  }
+
+  /**
+   * Try to find the given class, either by fully qualified name or by
+   * relative reference within the same namespace.
+   *
+   * @return the {@link DocClass} or {@code false} if none could be found
+   */
+  function findClass($name, Logger $logger) {
+    // try fqn
+    $class = $this->getDatabase()->findClass($name, $logger);
+    if (!$class) {
+      // try our local namespace
+      $class = $this->getDatabase()->findClass($this->getNamespace()->getName() . "\\" . $name, $logger);
+    }
+    return $class;
+  }
+
+  /**
+   * Get the class hierarchy as a list of {@link DocClass}es or strings.
+   */
+  function getClassHierarchy(Logger $logger) {
+    if ($this->data['extends']) {
+      $class = $this->findClass($this->data['extends'], $logger);
+      if ($class) {
+        return array_merge($class->getClassHierarchy($logger), array($class));
+      } else {
+        return array($this->data['extends']);
+      }
+    } else {
+      return array();
+    }
   }
 
 }
