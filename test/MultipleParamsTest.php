@@ -45,4 +45,11 @@ class MultipleParamsTest extends DocCommentTest {
     ), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['methods']['getEndpoint']['doc']['return']);
   }
 
+  function testBothReturnTags() {
+    $this->assertEquals(array(
+      'one',
+      'two'
+    ), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['methods']['test']['doc']['return']);
+  }
+
 }

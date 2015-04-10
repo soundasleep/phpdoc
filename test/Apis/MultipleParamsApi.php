@@ -40,4 +40,12 @@ class MultipleParamsApi extends Api {
     return "/api/v2/:currency";
   }
 
+  /**
+   * @return one
+   * @returns two
+   */
+  function test() {
+    // empty
+  }
+
 }

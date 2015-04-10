@@ -113,7 +113,7 @@ class DocCommentParser {
   }
 
   function getThrows($comment) {
-    return $this->getHash("throws", $comment);
+    return $this->getHash("throw", $comment);
   }
 
 }
