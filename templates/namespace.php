@@ -1,6 +1,6 @@
 <h1>
   <small><?php echo $namespace->getModifiers(); ?></small>
-  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getName()); ?> Namespace
+  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getName()); ?>
 </h1>
 
 <?php

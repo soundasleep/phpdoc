@@ -10,7 +10,7 @@ use Monolog\Logger;
 class DocClass extends DocClasslike {
 
   function getFilename() {
-    return "interface_" . $this->escape($this->getNamespace()->getName()) . "_" . $this->escape($this->getName()) . ".html";
+    return "class_" . $this->escape($this->getNamespace()->getName()) . "_" . $this->escape($this->getName()) . ".html";
   }
 
   function getElementType() {

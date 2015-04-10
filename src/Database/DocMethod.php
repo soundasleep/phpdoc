@@ -37,7 +37,14 @@ class DocMethod extends AbstractDocElement {
   }
 
   function getFilename() {
-    return "class_" . $this->escape($this->getClass()->getNamespace()->getName()) . "_" . $this->escape($this->getClass()->getName()) . ".html#" . $this->escape($this->getName());
+    if ($this->getClass() instanceof DocClass) {
+      $type = "class";
+    } else if ($this->getClass() instanceof DocInterface) {
+      $type = "interface";
+    } else {
+      throw new \Exception("Unknown class instance " . get_class($this->getClass()));
+    }
+    return $type . "_" . $this->escape($this->getClass()->getNamespace()->getName()) . "_" . $this->escape($this->getClass()->getName()) . ".html#" . $this->escape($this->getName());
   }
 
   function getPrintableName() {

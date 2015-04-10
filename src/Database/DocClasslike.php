@@ -94,8 +94,15 @@ abstract class DocClasslike extends AbstractDocElement {
    * @return the {@link DocClass} or {@code false} if none could be found
    */
   function findClass($name, Logger $logger) {
-    // try fqn
-    $class = $this->getDatabase()->findClasslike($name, $logger);
+    // try uses
+    $class = false;
+    if (isset($this->data['uses']) && isset($this->data['uses'][$name])) {
+      $class = $this->getDatabase()->findClasslike($this->data['uses'][$name], $logger);
+    }
+    if (!$class) {
+      // try fqn
+      $class = $this->getDatabase()->findClasslike($name, $logger);
+    }
     if (!$class) {
       // try our local namespace
       $class = $this->getDatabase()->findClasslike($this->getNamespace()->getName() . "\\" . $name, $logger);
@@ -128,8 +135,6 @@ abstract class DocClasslike extends AbstractDocElement {
         $class = $this->findClass($name, $logger);
         if ($class) {
           $result = array_merge($result, $class->getParentInterfaces($logger));
-        } else {
-          $result[] = $name;
         }
       }
     }

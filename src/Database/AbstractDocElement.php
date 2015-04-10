@@ -71,4 +71,17 @@ abstract class AbstractDocElement implements Visible {
     return $this->warnings;
   }
 
+  /**
+   * So this can be used in {@link array_unique()}, etc.
+   */
+  function __toString() {
+    $bits = array();
+    $bits[] = $this->getElementType();
+    if ($this instanceof DocClasslike) {
+      $bits[] = $this->getNamespace()->getName();
+    }
+    $bits[] = $this->getName();
+    return implode(" ", $bits);
+  }
+
 }
