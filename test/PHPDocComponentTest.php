@@ -13,7 +13,7 @@ class PHPDocComponentTest extends \ComponentTests\ComponentTest {
    * names that will be excluded by {@link #iterateOver()}.
    */
   function getExcludes() {
-    return array("/vendor/", "/docs/", "/.git/", "/.svn/");
+    return array("/vendor/", "/docs/", "/.git/", "/.svn/", "/exchanges/", "/currencies/");
   }
 
 }

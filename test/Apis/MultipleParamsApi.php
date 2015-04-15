@@ -48,4 +48,18 @@ class MultipleParamsApi extends Api {
     // empty
   }
 
+  /**
+   * @throws {@link BalanceException} if something
+   */
+  function testThrow1() {
+
+  }
+
+  /**
+   * @throws BalanceException if something
+   */
+  function testThrow2() {
+
+  }
+
 }

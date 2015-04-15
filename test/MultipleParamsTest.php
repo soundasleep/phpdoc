@@ -52,4 +52,16 @@ class MultipleParamsTest extends DocCommentTest {
     ), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['methods']['test']['doc']['return']);
   }
 
+  function testThrowsInlineLink() {
+    $this->assertEquals(array(
+      '{@link BalanceException} if something' => false,
+    ), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['methods']['testThrow1']['doc']['throws']);
+  }
+
+  function testThrowsReferencesClass() {
+    $this->assertEquals(array(
+      'BalanceException' => 'if something',
+    ), $this->result['namespaces']['PHPDoc\Test\Apis']['classes']['MultipleParamsApi']['methods']['testThrow2']['doc']['throws']);
+  }
+
 }

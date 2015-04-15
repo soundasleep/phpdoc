@@ -80,7 +80,13 @@ class DocCommentParser {
         $bits = explode(" ", $lines[$i], 3);
         switch (count($bits)) {
           case 3:
-            $result[$bits[1]] = $bits[2];
+            // don't hash out inline links
+            if (substr($bits[1], 0, 1) === "{") {
+              $new_key = implode(" ", array($bits[1], $bits[2]));
+              $result[$new_key] = false;
+            } else {
+              $result[$bits[1]] = $bits[2];
+            }
             break;
           case 2:
             $result[$bits[1]] = false;
