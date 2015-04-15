@@ -108,6 +108,9 @@ class HtmlGenerator {
     // @code
     $text = preg_replace_callback("/{@code ([^}]+)}/", array($this, 'formatInlineCode'), $text);
 
+    // `...`
+    $text = preg_replace_callback("/`([^`]+)`/", array($this, 'formatInlineCode'), $text);
+
     // @link http
     $text = preg_replace_callback("/{@link (https?:\\/\\/.+)}/", array($this, 'formatInlineLinkHttp'), $text);
 
