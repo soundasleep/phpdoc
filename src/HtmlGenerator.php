@@ -194,7 +194,7 @@ class HtmlGenerator {
     if ($method) {
       return $this->linkTo($method->getFilename(), "#" . $method->getName() . "()");
     }
-    return $matches[1];
+    return "#" . $matches[1];
   }
 
 }

@@ -38,7 +38,7 @@ if ($namespaces) { ?>
 <?php foreach ($namespace->getInterfaces() as $class) {
   echo "<tr>";
   echo "<td>" . $this->linkTo($class->getFilename(), $class->getName()) . "</td>";
-  echo "<td>" . $class->getDoc('title') . "</td>";
+  echo "<td>" . $this->formatInline($class, $class->getInheritedDoc($this->logger, 'title')) . "</td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -61,7 +61,7 @@ if ($namespaces) { ?>
 <?php foreach ($namespace->getClasses() as $class) {
   echo "<tr>";
   echo "<td>" . $this->linkTo($class->getFilename(), $class->getName()) . "</td>";
-  echo "<td>" . $class->getDoc('title') . "</td>";
+  echo "<td>" . $this->formatInline($class, $class->getInheritedDoc($this->logger, 'title')) . "</td>";
   echo "</tr>";
 } ?>
   </tbody>
