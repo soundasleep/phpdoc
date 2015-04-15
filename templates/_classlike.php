@@ -91,7 +91,7 @@ require(__DIR__ . "/_doc.php");
 <?php foreach ($class->getMethods() as $method) {
   echo "<tr>";
   echo "<td>" . $this->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
-  echo "<td>" . $method->getDoc('title') . "</td>";
+  echo "<td>" . $method->getInheritedDoc($this->logger, 'title') . "</td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -115,7 +115,7 @@ if ($inherited) { ?>
 <?php foreach ($inherited as $method) {
   echo "<tr>";
   echo "<td>" . $this->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
-  echo "<td>" . $method->getDoc('title') . " <i>(from " . $this->linkTo($method->getFilename(), $method->getClass()->getName()) . ")</i></td>";
+  echo "<td>" . $method->getInheritedDoc($this->logger, 'title') . " <i>(from " . $this->linkTo($method->getFilename(), $method->getClass()->getName()) . ")</i></td>";
   echo "</tr>";
 } ?>
   </tbody>

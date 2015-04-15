@@ -2,6 +2,8 @@
 
 namespace PHPDoc\Database;
 
+use Monolog\Logger;
+
 /**
  * Represents a namespace.
  */
@@ -83,5 +85,16 @@ abstract class AbstractDocElement implements Visible {
     $bits[] = $this->getName();
     return implode(" ", $bits);
   }
+
+  function getInheritedDoc(Logger $logger, $key) {
+    $method = $this->getInheritedDocElement($logger, $key);
+    if ($method) {
+      return $method->getDoc($key);
+    } else {
+      return null;
+    }
+  }
+
+  abstract function getInheritedDocElement(Logger $logger, $key);
 
 }

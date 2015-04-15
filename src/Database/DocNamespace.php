@@ -2,6 +2,8 @@
 
 namespace PHPDoc\Database;
 
+use Monolog\Logger;
+
 /**
  * Represents a namespace.
  */
@@ -83,6 +85,13 @@ class DocNamespace extends AbstractDocElement {
 
   function getElementType() {
     return "namespace";
+  }
+
+  /**
+   * @return null
+   */
+  function getInheritedDocElement(Logger $logger, $key) {
+    return null;
   }
 
 }

@@ -77,4 +77,11 @@ class Database extends AbstractDocElement {
     throw new \Exception("Database has no element type");
   }
 
+  /**
+   * @return null
+   */
+  function getInheritedDocElement(Logger $logger, $key) {
+    return null;
+  }
+
 }

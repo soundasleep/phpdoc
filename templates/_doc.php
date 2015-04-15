@@ -1,7 +1,11 @@
 <?php
 
-if ($doc_reference->getDoc('title')) {
-  echo "<p>" . $doc_reference->getDoc('title') . "</p>";
+if ($doc_reference->getInheritedDoc($this->logger, 'title')) {
+  echo "<p>" . $doc_reference->getInheritedDoc($this->logger, 'title') . "</p>";
+  $reference = $doc_reference->getInheritedDocElement($this->logger, 'title');
+  if ($reference !== $doc_reference) {
+    echo "<p><i>(from " . $this->linkTo($reference->getFilename(), $reference->getName()) . ")</i></p>";
+  }
 }
 if ($doc_reference->getDoc('description')) {
   echo "<p>" . str_replace("\n", "</p><p>", $doc_reference->getDoc('description')) . "</p>";

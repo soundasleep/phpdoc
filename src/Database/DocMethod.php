@@ -2,6 +2,8 @@
 
 namespace PHPDoc\Database;
 
+use Monolog\Logger;
+
 /**
  * Represents a method.
  */
@@ -57,6 +59,36 @@ class DocMethod extends AbstractDocElement {
 
   function getElementType() {
     return "function";
+  }
+
+  /**
+   * Get the {@link DocMethod} that provides the inherited documentation
+   * for the given key, as from its parent classes or interfaces, or
+   * return {@code null}.
+   */
+  function getInheritedDocElement(Logger $logger, $key) {
+    if ($this->getDoc($key)) {
+      return $this;
+    }
+    if ($this->getClass() instanceof DocClass) {
+      foreach ($this->getClass()->getClassHierarchy($logger) as $parent_class) {
+        if (!is_string($parent_class)) {
+          $method = $parent_class->getMethod($this->getName());
+          if ($method && $method->getDoc($key)) {
+            return $method;
+          }
+        }
+      }
+    }
+    foreach ($this->getClass()->getParentInterfaces($logger) as $parent_interface) {
+      if (!is_string($parent_interface)) {
+        $method = $parent_interface->getMethod($this->getName());
+        if ($method && $method->getDoc($key)) {
+          return $method;
+        }
+      }
+    }
+    return null;
   }
 
 }

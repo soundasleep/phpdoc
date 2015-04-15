@@ -141,6 +141,13 @@ abstract class DocClasslike extends AbstractDocElement {
     return array_unique($result);
   }
 
+  function getMethod($key) {
+    if (isset($this->methods[$key])) {
+      return $this->methods[$key];
+    }
+    return null;
+  }
+
   /**
    * Get all known classes that implement this interface.
    * By default, returns empty.
@@ -155,6 +162,32 @@ abstract class DocClasslike extends AbstractDocElement {
    */
   function getDirectSubclasses(Logger $logger) {
     return array();
+  }
+
+  /**
+   * Get the {@link DocClasslike} that provides the inherited documentation
+   * for the given key, as from its parent classes or interfaces, or
+   * return {@code null}.
+   */
+  function getInheritedDocElement(Logger $logger, $key) {
+    if ($this->getDoc($key)) {
+      return $this;
+    }
+    foreach ($this->getClassHierarchy($logger) as $parent_class) {
+      if (!is_string($parent_class)) {
+        if ($parent_class->getDoc($key)) {
+          return $parent_class;
+        }
+      }
+    }
+    foreach ($this->getParentInterfaces($logger) as $parent_interface) {
+      if (!is_string($parent_interface)) {
+        if ($parent_interface->getDoc($key)) {
+          return $parent_interface;
+        }
+      }
+    }
+    return null;
   }
 
 }
