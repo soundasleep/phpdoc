@@ -94,4 +94,43 @@ class HtmlGenerator {
     }
   }
 
+  var $format_reference = null;
+
+  function formatInline($reference, $text) {
+    $this->format_reference = $reference;
+
+    // @inheritDoc
+    // @code
+    $text = preg_replace_callback("/{@code ([^}]+)}/", array($this, 'formatInlineCode'), $text);
+
+    // @link http
+    // @link #method
+    // @link class#method
+
+    // @link class
+    $text = preg_replace_callback("/{@link ([^}]+)}/", array($this, 'formatInlineLinkClass'), $text);
+
+    $this->format_reference = null;
+
+    return $text;
+  }
+
+  /**
+   * Render <pre>{@code text}</pre>.
+   */
+  protected function formatInlineCode($matches) {
+    return "<code>" . $matches[1] . "</code>";
+  }
+
+  /**
+   * Render <pre>{@link class}</pre>.
+   */
+  protected function formatInlineLinkClass($matches) {
+    $class = $this->format_reference->findClass($matches[1], $this->logger);
+    if ($class) {
+      return $this->linkTo($class->getFilename(), $class->getName());
+    }
+    return $matches[1];
+  }
+
 }

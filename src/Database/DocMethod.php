@@ -91,4 +91,14 @@ class DocMethod extends AbstractDocElement {
     return null;
   }
 
+  /**
+   * Try to find the given class, either by fully qualified name or by
+   * relative reference within the same namespace.
+   *
+   * @return the {@link DocClass} or {@code false} if none could be found
+   */
+  function findClass($name, Logger $logger) {
+    return $this->getClass()->findClass($name, $logger);
+  }
+
 }

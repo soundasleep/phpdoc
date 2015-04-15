@@ -2,7 +2,7 @@
 
 if ($doc_reference->getInheritedDoc($this->logger, 'title')) {
   echo "<p>";
-  echo $doc_reference->getInheritedDoc($this->logger, 'title');
+  echo $this->formatInline($doc_reference, $doc_reference->getInheritedDoc($this->logger, 'title'));
   $reference = $doc_reference->getInheritedDocElement($this->logger, 'title');
   if ($reference !== $doc_reference) {
     echo " <i>(from " . $this->linkTo($reference->getFilename(), $reference->getName()) . ")</i>";
@@ -12,7 +12,7 @@ if ($doc_reference->getInheritedDoc($this->logger, 'title')) {
 
 if ($doc_reference->getInheritedDoc($this->logger, 'description')) {
   echo "<p>";
-  echo str_replace("\n", "</p><p>", $doc_reference->getInheritedDoc($this->logger, 'description'));
+  echo str_replace("\n", "</p><p>", $this->formatInline($doc_reference, $doc_reference->getInheritedDoc($this->logger, 'description')));
   $reference = $doc_reference->getInheritedDocElement($this->logger, 'description');
   if ($reference !== $doc_reference) {
     echo " <i>(from " . $this->linkTo($reference->getFilename(), $reference->getName()) . ")</i>";
@@ -26,7 +26,7 @@ if ($doc_reference->getInheritedDoc($this->logger, 'params')) {
   echo "<dt>Parameters:</dt>";
   echo "<dd>";
   foreach ($doc_reference->getInheritedDoc($this->logger, 'params') as $param => $description) {
-    echo "<code>" . $param . "</code> - " . $description . "<br>";
+    echo "<code>" . $param . "</code> - " . $this->formatInline($doc_reference, $description) . "<br>";
   }
   echo "</dd>";
 }
@@ -35,7 +35,7 @@ if ($doc_reference->getInheritedDoc($this->logger, 'return')) {
   echo "<dt>Returns:</dt>";
   echo "<dd>";
   foreach ($doc_reference->getInheritedDoc($this->logger, 'return') as $description) {
-    echo $description . "<br>";
+    echo $this->formatInline($doc_reference, $description) . "<br>";
   }
   echo "</dd>";
 }
@@ -57,7 +57,7 @@ if ($doc_reference->getInheritedDoc($this->logger, 'throws')) {
       echo $thrown_class;
     }
     if ($description) {
-      echo " - " . $description;
+      echo " - " . $this->formatInline($doc_reference, $description);
     }
     echo "<br>";
   }
@@ -81,7 +81,7 @@ if ($doc_reference->getInheritedDoc($this->logger, 'see')) {
       echo $see_class;
     }
     if ($description) {
-      echo " - " . $description;
+      echo " - " . $this->formatInline($doc_reference, $description);
     }
     echo "<br>";
   }
