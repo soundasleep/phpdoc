@@ -3,6 +3,7 @@
 namespace PHPDoc;
 
 use PHPDoc\Database\Database;
+use PHPDoc\Database\DocClasslike;
 
 class HtmlGenerator {
 
@@ -95,20 +96,35 @@ class HtmlGenerator {
   }
 
   var $format_reference = null;
+  var $code_references = array();
 
   function formatInline($reference, $text) {
     $this->format_reference = $reference;
+
+    // strip out <code>...</code>
+    $this->code_references = array();
+    $text = preg_replace_callback("/<code>(.+?)<\\/code>/", array($this, 'formatInlineStripCode'), $text);
 
     // @inheritDoc
     // @code
     $text = preg_replace_callback("/{@code ([^}]+)}/", array($this, 'formatInlineCode'), $text);
 
     // @link http
+    $text = preg_replace_callback("/{@link (https?:\\/\\/.+)}/", array($this, 'formatInlineLinkHttp'), $text);
+
     // @link #method
+    $text = preg_replace_callback("/{@link #([^}\(]+).*}/", array($this, 'formatInlineLinkMethod'), $text);
+
     // @link class#method
+    $text = preg_replace_callback("/{@link ([^#}]+)#([^}\(]+).*}/", array($this, 'formatInlineLinkClassMethod'), $text);
 
     // @link class
     $text = preg_replace_callback("/{@link ([^}]+)}/", array($this, 'formatInlineLinkClass'), $text);
+
+    // insert back <code>...</code>
+    foreach ($this->code_references as $key => $value) {
+      $text = str_replace($key, $value, $text);
+    }
 
     $this->format_reference = null;
 
@@ -116,19 +132,65 @@ class HtmlGenerator {
   }
 
   /**
-   * Render <pre>{@code text}</pre>.
+   * Safely strip out any <code>...</code> blocks so we can add them in later
+   * so they don't get intercepted by any of the other inline formats.
+   */
+  function formatInlineStripCode($matches) {
+    $key = "__inline_code_" . count($this->code_references) . "__";
+    $this->code_references[$key] = $matches[0];
+    return $key;
+  }
+
+  /**
+   * Render <code>{@code text}</code>.
    */
   protected function formatInlineCode($matches) {
     return "<code>" . $matches[1] . "</code>";
   }
 
   /**
-   * Render <pre>{@link class}</pre>.
+   * Render <code>{@link http://...}</code>.
+   */
+  protected function formatInlineLinkHttp($matches) {
+    return $this->linkTo($matches[1], $matches[1]);
+  }
+
+  /**
+   * Render <code>{@link class}</code>.
    */
   protected function formatInlineLinkClass($matches) {
     $class = $this->format_reference->findClass($matches[1], $this->logger);
     if ($class) {
       return $this->linkTo($class->getFilename(), $class->getName());
+    }
+    return $matches[1];
+  }
+
+  /**
+   * Render <code>{@link class#method}</code>.
+   */
+  protected function formatInlineLinkClassMethod($matches) {
+    $class = $this->format_reference->findClass($matches[1], $this->logger);
+    if ($class) {
+      $method = $class->getMethod($matches[2]);
+      if ($method) {
+        return $this->linkTo($method->getFilename(), $class->getName() . "#" . $method->getName() . "()");
+      }
+    }
+    return $matches[1] . "#" . $matches[2];
+  }
+
+  /**
+   * Render <code>{@link #method}</code>.
+   */
+  protected function formatInlineLinkMethod($matches) {
+    $class = $this->format_reference;
+    if (!($class instanceof DocClasslike)) {
+      $class = $class->getClass();
+    }
+    $method = $class->getMethod($matches[1]);
+    if ($method) {
+      return $this->linkTo($method->getFilename(), "#" . $method->getName() . "()");
     }
     return $matches[1];
   }
