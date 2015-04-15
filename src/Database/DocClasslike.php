@@ -173,10 +173,12 @@ abstract class DocClasslike extends AbstractDocElement {
     if ($this->getDoc($key)) {
       return $this;
     }
-    foreach ($this->getClassHierarchy($logger) as $parent_class) {
-      if (!is_string($parent_class)) {
-        if ($parent_class->getDoc($key)) {
-          return $parent_class;
+    if ($this instanceof DocClass) {
+      foreach ($this->getClassHierarchy($logger) as $parent_class) {
+        if (!is_string($parent_class)) {
+          if ($parent_class->getDoc($key)) {
+            return $parent_class;
+          }
         }
       }
     }
