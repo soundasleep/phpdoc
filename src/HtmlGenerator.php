@@ -105,7 +105,6 @@ class HtmlGenerator {
     $this->code_references = array();
     $text = preg_replace_callback("/<code>(.+?)<\\/code>/", array($this, 'formatInlineStripCode'), $text);
 
-    // @inheritDoc
     // @code
     $text = preg_replace_callback("/{@code ([^}]+)}/", array($this, 'formatInlineCode'), $text);
 
