@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPDoc\Test;
+namespace PHPDoc2\Test;
 
-use PHPDoc\Parser;
+use PHPDoc2\Parser;
 use Monolog\Logger;
 
 class SilentLogger extends \Monolog\Handler\AbstractHandler {

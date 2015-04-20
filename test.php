@@ -2,10 +2,10 @@
 
 require(__DIR__ . "/vendor/autoload.php");
 
-use PHPDoc\Collector;
-use PHPDoc\MyLogger;
-use PHPDoc\HtmlGenerator;
-use PHPDoc\Database\Database;
+use PHPDoc2\Collector;
+use PHPDoc2\MyLogger;
+use PHPDoc2\HtmlGenerator;
+use PHPDoc2\Database\Database;
 
 $logger = new \Monolog\Logger("test");
 $logger->pushHandler(new MyLogger());

@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPDoc\Database;
+namespace PHPDoc2\Database;
 
 use Monolog\Logger;
 

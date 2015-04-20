@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPDoc\Database;
+namespace PHPDoc2\Database;
 
 use Monolog\Logger;
 
@@ -64,7 +64,7 @@ class DocNamespace extends AbstractDocElement {
   }
 
   function getTitle($options) {
-    return "PHPDoc - " . $this->getName();
+    return "PHPDoc2 - " . $this->getName();
   }
 
   function getFilename() {

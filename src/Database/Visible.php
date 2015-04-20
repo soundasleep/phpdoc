@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPDoc\Database;
+namespace PHPDoc2\Database;
 
 /**
  * Represents an intelligent documentation database that can be

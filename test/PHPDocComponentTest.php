@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPDoc\Test;
+namespace PHPDoc2\Test;
 
 class PHPDocComponentTest extends \ComponentTests\ComponentTest {
 

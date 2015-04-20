@@ -1,10 +1,10 @@
 {
-  "name": "soundasleep/phpdoc",
+  "name": "soundasleep/phpdoc2",
   "description": "Parse PHP documentation blocks and generate HTML output",
   "autoload": {
     "psr-4": {
-      "PHPDoc\\": "src",
-      "PHPDoc\\Test\\": "test"
+      "PHPDoc2\\": "src",
+      "PHPDoc2\\Test\\": "test"
     }
   },
   "require": {

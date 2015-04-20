@@ -1,4 +1,4 @@
-<h1>PHPDoc</h1>
+<h1>PHPDoc2</h1>
 
 <dl>
   <dt>Namespaces</dt>

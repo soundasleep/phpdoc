@@ -1,5 +1,5 @@
-soundasleep/phpdoc
-==================
+soundasleep/phpdoc2
+===================
 
 `soundasleep/phpdoc` is another PHP documentation generator, but tries to be cleaner
 and smarter and more extensible than existing solutions.
@@ -19,6 +19,7 @@ and smarter and more extensible than existing solutions.
 
 ## TODO
 
+* Look at compatibility with [phpdoc PSR standard](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
 * Provide project options e.g. project name
 * Generate demo docs and publish
 * Try generating docs for large projects e.g. Symfony

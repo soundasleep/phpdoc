@@ -1,9 +1,9 @@
 <?php
 
-namespace PHPDoc;
+namespace PHPDoc2;
 
-use PHPDoc\Database\Database;
-use PHPDoc\Database\DocClasslike;
+use PHPDoc2\Database\Database;
+use PHPDoc2\Database\DocClasslike;
 
 class HtmlGenerator {
 

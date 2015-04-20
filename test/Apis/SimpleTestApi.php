@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPDoc\Test\Apis;
+namespace PHPDoc2\Test\Apis;
 
 use \Apis\Api;
 

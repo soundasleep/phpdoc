@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPDoc\Database;
+namespace PHPDoc2\Database;
 
 use Monolog\Logger;
 
@@ -58,7 +58,7 @@ abstract class DocClasslike extends AbstractDocElement {
   }
 
   function getTitle($options) {
-    return "PHPDoc - " . $options['project_name'];
+    return "PHPDoc2 - " . $options['project_name'];
   }
 
   function getInheritedMethods(Logger $logger) {
