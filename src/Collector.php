@@ -17,9 +17,11 @@ class Collector {
     $this->logger = $logger;
   }
 
-  public function parse($dir) {
+  public function parse($dirs) {
     $this->result = array();
-    $this->iterate($dir);
+    foreach ($dirs as $dir) {
+      $this->iterate($dir);
+    }
     return $this->result;
   }
 
