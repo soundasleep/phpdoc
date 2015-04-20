@@ -1,7 +1,7 @@
 soundasleep/phpdoc2
 ===================
 
-`soundasleep/phpdoc` is another PHP documentation generator, but tries to be cleaner
+`soundasleep/phpdoc2` is another PHP documentation generator, but tries to be cleaner
 and smarter and more extensible than existing solutions.
 
 ## Top-level tags supported
