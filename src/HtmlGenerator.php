@@ -66,6 +66,7 @@ class HtmlGenerator {
 
     // lets use PHP to make our lives easier!
     $database = $this->database;
+    $options = $this->options;
     foreach ($args as $key => $value) {
       $$key = $value;
     }

@@ -84,4 +84,20 @@ class Database extends AbstractDocElement {
     return null;
   }
 
+  function getAllClasses() {
+    $result = array();
+    foreach ($this->namespaces as $ns) {
+      $result = array_merge($result, $ns->getClasses());
+    }
+    return $result;
+  }
+
+  function getAllInterfaces() {
+    $result = array();
+    foreach ($this->namespaces as $ns) {
+      $result = array_merge($result, $ns->getInterfaces());
+    }
+    return $result;
+  }
+
 }
