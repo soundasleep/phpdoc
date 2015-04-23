@@ -37,7 +37,6 @@ and smarter and more extensible than existing solutions.
 * `{@link foo actual text}` support
 * `{@link plural}s` support
 * Maybe try to provide tests for these types of tags, perhaps a sample project, or simply do HTML regexps on generated documentation
-* Test on non-namespaced classes and interfaces
 * Global functions support
 * Option for `issue #123` to link to an external issue tracker
 * Provide a `grunt` task/`bin` task

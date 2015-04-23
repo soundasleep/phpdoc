@@ -11,7 +11,7 @@
 <?php
   foreach ($database->getNamespaces() as $namespace) {
     echo "<li>";
-    echo $this->linkTo($namespace->getFilename(), $namespace->getName());
+    echo $this->linkTo($namespace->getFilename(), $namespace->getPrintableName());
     echo " - " . $this->plural(count($namespace->getClasses()), "class", "classes");
     echo "</li>";
   }

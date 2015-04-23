@@ -1,7 +1,7 @@
 <h1>
   <small><?php echo $class->getModifiers(); ?></small>
 
-  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getName()); ?>
+  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getPrintableName()); ?>
   \
   <?php echo $this->linkTo($class->getFilename(), $class->getName()); ?>
 </h1>
