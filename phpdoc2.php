@@ -5,9 +5,9 @@
  */
 
 if (file_exists(__DIR__ . "/vendor/autoload.php")) {
-  require(__DIR__ . "/vendor/autoload.php");
+  require(__DIR__ . /* ignore require() lint */ "/vendor/autoload.php");
 } else {
-  require(__DIR__ . "/../../autoload.php");
+  require(__DIR__ . /* ignore require() lint */ "/../../autoload.php");
 }
 
 use GetOptionKit\OptionCollection;
