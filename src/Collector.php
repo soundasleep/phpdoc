@@ -26,8 +26,6 @@ class Collector {
 
     $parser = new Parser($this->logger);
     return $parser->load($files);
-
-    return $this->result;
   }
 
   /**
@@ -44,7 +42,7 @@ class Collector {
             continue;
           }
           if (is_dir($dir . "/" . $entry)) {
-            $this->iterate($dir . "/" . $entry);
+            $files = array_merge($files, $this->iterate($dir . "/" . $entry));
           } else if ($this->isPHPFile($entry)) {
             $files[] = $dir . "/" . $entry;
           }
