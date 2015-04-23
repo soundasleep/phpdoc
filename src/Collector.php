@@ -11,20 +11,28 @@ use Monolog\Logger;
 class Collector {
 
   var $logger;
-  var $result;
 
   function __construct(Logger $logger) {
     $this->logger = $logger;
   }
 
   public function parse($dirs) {
-    $this->result = array();
+    $files = array();
     foreach ($dirs as $dir) {
-      $this->iterate($dir);
+      $files = array_merge($files, $this->iterate($dir));
     }
+
+    $this->logger->info("Parsing " . number_format(count($files)) . " PHP files...");
+
+    $parser = new Parser($this->logger);
+    return $parser->load($files);
+
     return $this->result;
   }
 
+  /**
+   * Find all the PHP files to search in the given directory.
+   */
   function iterate($dir) {
     $files = array();
     $this->logger->info("Parsing dir '$dir'...");
@@ -45,10 +53,7 @@ class Collector {
       closedir($handle);
     }
 
-    $this->logger->info("Parsing " . number_format(count($files)) . " PHP files...");
-
-    $parser = new Parser($this->logger);
-    $this->result = $parser->load($files);
+    return $files;
   }
 
   function isPHPFile($filename) {
