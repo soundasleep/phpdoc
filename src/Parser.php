@@ -157,7 +157,7 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
     $this->last_property = null;
     $this->current_uses = array();
 
-    if (!isset($result['namespaces'][$this->current_namespace])) {
+    if (!isset($this->result['namespaces'][$this->current_namespace])) {
       $this->result['namespaces'][$this->current_namespace] = array(
         'classes' => array(),
         'interfaces' => array(),
