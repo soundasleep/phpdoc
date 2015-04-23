@@ -13,14 +13,14 @@ class DocNamespace extends AbstractDocElement {
   var $interfaces = array();
 
   function __construct($name, $data) {
-    if (!$name) {
-      throw new \InvalidArgumentException("'$name' is not a valid namespace name");
-    }
-
+    // $name may be empty!
     $this->name = $name;
     $this->data = $data;
 
     // sort
+    if (!isset($data['classes'])) {
+      $data['classes'] = array();
+    }
     ksort($data['classes']);
 
     foreach ($data['classes'] as $class => $class_data) {
@@ -29,6 +29,9 @@ class DocNamespace extends AbstractDocElement {
     }
 
     // sort
+    if (!isset($data['interfaces'])) {
+      $data['interfaces'] = array();
+    }
     ksort($data['interfaces']);
 
     foreach ($data['interfaces'] as $interface => $interface_data) {
@@ -92,6 +95,13 @@ class DocNamespace extends AbstractDocElement {
    */
   function getInheritedDocElement(Logger $logger, $key) {
     return null;
+  }
+
+  function getPrintableName() {
+    if (!$this->getName()) {
+      return "(none)";
+    }
+    return $this->getName();
   }
 
 }

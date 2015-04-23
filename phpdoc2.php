@@ -5,13 +5,14 @@
  */
 
 if (file_exists(__DIR__ . "/vendor/autoload.php")) {
-  require(__DIR__ . "/vendor/autoload.php");
+  require(__DIR__ . /* ignore require() lint */ "/vendor/autoload.php");
 } else {
-  require(__DIR__ . "/../../autoload.php");
+  require(__DIR__ . /* ignore require() lint */ "/../../autoload.php");
 }
 
 use GetOptionKit\OptionCollection;
 use GetOptionKit\OptionParser;
+use GetOptionKit\OptionPrinter\ConsoleOptionPrinter;
 
 $specs = new OptionCollection();
 $specs->add('d|directory+', 'PHP directories to parse');
@@ -24,12 +25,13 @@ $parser = new OptionParser($specs);
 $result = $parser->parse($argv);
 
 if (isset($result['help'])) {
+  $printer = new ConsoleOptionPrinter();
   echo $printer->render($specs);
   return;
 }
 
 // now parse
-$dirs = array(".");
+$dirs = array();
 $config = array();
 $json_file = false;
 $output_dir = "docs/";
@@ -62,6 +64,10 @@ foreach ($result as $key => $arg) {
       break;
 
   }
+}
+
+if (!$dirs) {
+  throw new Exception("Need to specify at least one directory with --directory switch");
 }
 
 use PHPDoc2\Collector;

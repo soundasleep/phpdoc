@@ -97,4 +97,8 @@ abstract class AbstractDocElement implements Visible {
 
   abstract function getInheritedDocElement(Logger $logger, $key);
 
+  function getPrintableName() {
+    return $this->getName();
+  }
+
 }

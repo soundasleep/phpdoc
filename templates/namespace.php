@@ -1,6 +1,6 @@
 <h1>
   <small><?php echo $namespace->getModifiers(); ?></small>
-  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getName()); ?>
+  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getPrintableName()); ?>
 </h1>
 
 <?php
@@ -14,7 +14,7 @@ if ($namespaces) { ?>
 <?php
   foreach ($namespaces as $child) {
     echo "<li>";
-    echo $this->linkTo($child->getFilename(), $child->getName());
+    echo $this->linkTo($child->getFilename(), $child->getPrintableName());
     echo " - " . $this->plural(count($child->getClasses()), "class", "classes");
     echo "</li>";
   }
