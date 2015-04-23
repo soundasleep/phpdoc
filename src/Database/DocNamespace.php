@@ -67,7 +67,7 @@ class DocNamespace extends AbstractDocElement {
   }
 
   function getTitle($options) {
-    return "PHPDoc2 - " . $this->getName();
+    return "PHPDoc2 - " . $this->getPrintableName();
   }
 
   function getFilename() {
