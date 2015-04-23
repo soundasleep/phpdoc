@@ -26,8 +26,8 @@ class Collector {
   }
 
   function iterate($dir) {
-    $parser = new Parser($this->logger);
-    $this->logger->info("Parsing dir '$dir'");
+    $files = array();
+    $this->logger->info("Parsing dir '$dir'...");
 
     if ($handle = opendir($dir)) {
       while (false !== ($entry = readdir($handle))) {
@@ -38,21 +38,21 @@ class Collector {
           if (is_dir($dir . "/" . $entry)) {
             $this->iterate($dir . "/" . $entry);
           } else if ($this->isPHPFile($entry)) {
-            $result = $parser->load($dir . "/" . $entry);
-            $this->mergeResult($result);
+            $files[] = $dir . "/" . $entry;
           }
         }
       }
       closedir($handle);
     }
+
+    $this->logger->info("Parsing " . number_format(count($files)) . " PHP files...");
+
+    $parser = new Parser($this->logger);
+    $this->result = $parser->load($files);
   }
 
   function isPHPFile($filename) {
     return substr(strtolower($filename), -4) === ".php";
-  }
-
-  function mergeResult($result) {
-    $this->result = array_merge_recursive($this->result, $result);
   }
 
   function shouldIgnore($dir) {

@@ -24,36 +24,44 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
   }
 
   /**
-   * Load the given file.
+   * Load the given files.
+   * @param $files a single file, or an array of files
    */
-  public function load($file) {
-    $this->logger->info("Parsing file '$file'");
+  public function load($files) {
+    if (!is_array($files)) {
+      $files = array($files);
+    }
 
-    $this->file = $file;
-    $this->parser = new \PhpParser\Parser(new \PhpParser\Lexer\Emulative);
-    $this->traverser = new \PhpParser\NodeTraverser;
-    $this->doc_comment_parser = new DocCommentParser();
-
-    // add your visitor
-    $this->traverser->addVisitor($this);
     $this->result = array(
       'namespaces' => array(),
       'files' => array(),
     );
 
-    // reset
-    $this->current_namespace = "";
+    foreach ($files as $file) {
+      $this->logger->info("Parsing file '$file'");
 
-    $code = file_get_contents($file);
-    try {
-      $stmts = $this->parser->parse($code);
-      $this->traverser->traverse($stmts);
-    } catch (\PhpParser\Error $e) {
-      // in the case of parse error, ignore this file and continue
-      $this->logger->error("Could not parse '" . $dir . "/" . $entry . "': " . $e->getMessage());
+      $this->file = $file;
+      $this->parser = new \PhpParser\Parser(new \PhpParser\Lexer\Emulative);
+      $this->traverser = new \PhpParser\NodeTraverser;
+      $this->doc_comment_parser = new DocCommentParser();
+
+      // add your visitor
+      $this->traverser->addVisitor($this);
+
+      // reset
+      $this->current_namespace = "";
+
+      $code = file_get_contents($file);
+      try {
+        $stmts = $this->parser->parse($code);
+        $this->traverser->traverse($stmts);
+      } catch (\PhpParser\Error $e) {
+        // in the case of parse error, ignore this file and continue
+        $this->logger->error("Could not parse '" . $dir . "/" . $entry . "': " . $e->getMessage());
+      }
+
+      $this->result['files'][] = $file;
     }
-
-    $this->result['files'][] = $file;
 
     return $this->result;
   }
@@ -170,6 +178,9 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
       $formatted['implements'][] = $i->toString();
     }
 
+    if (isset($this->result['namespaces'][$this->current_namespace]['classes'][$data['name']])) {
+      $this->logger->warn("Class '" . $this->current_namespace . "/" . $data['name'] . "' has already been parsed before");
+    }
     $this->result['namespaces'][$this->current_namespace]['classes'][$data['name']] = $formatted;
 
     $this->current_class = $data['name'];
@@ -189,6 +200,9 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
       $formatted['implements'][] = $i->toString();
     }
 
+    if (isset($this->result['namespaces'][$this->current_namespace]['interfaces'][$data['name']])) {
+      $this->logger->warn("Interface '" . $this->current_namespace . "/" . $data['name'] . "' has already been parsed before");
+    }
     $this->result['namespaces'][$this->current_namespace]['interfaces'][$data['name']] = $formatted;
 
     $this->current_interface = $data['name'];
