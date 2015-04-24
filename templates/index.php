@@ -18,7 +18,16 @@
   foreach ($database->getNamespaces() as $namespace) {
     echo "<li>";
     echo $this->linkTo($namespace->getFilename(), $namespace->getPrintableName());
-    echo " - " . $this->plural(count($namespace->getClasses()), "class", "classes");
+    $references = array();
+    if ($namespace->getInterfaces()) {
+      $references[] = $this->plural(count($namespace->getInterfaces()), "interface");
+    }
+    if ($namespace->getClasses()) {
+      $references[] = $this->plural(count($namespace->getClasses()), "class", "classes");
+    }
+    if ($references) {
+      echo " - " . implode(", ", $references);
+    }
     echo "</li>";
   }
 ?>

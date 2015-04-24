@@ -15,7 +15,16 @@ if ($namespaces) { ?>
   foreach ($namespaces as $child) {
     echo "<li>";
     echo $this->linkTo($child->getFilename(), $child->getPrintableName());
-    echo " - " . $this->plural(count($child->getClasses()), "class", "classes");
+    $references = array();
+    if ($child->getInterfaces()) {
+      $references[] = $this->plural(count($child->getInterfaces()), "interface");
+    }
+    if ($child->getClasses()) {
+      $references[] = $this->plural(count($child->getClasses()), "class", "classes");
+    }
+    if ($references) {
+      echo " - " . implode(", ", $references);
+    }
     echo "</li>";
   }
 ?>
