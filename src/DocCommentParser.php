@@ -77,20 +77,33 @@ class DocCommentParser {
     $result = array();
     for ($i = 0; $i < count($lines); $i++) {
       if (substr($lines[$i], 0, strlen("@" . $tag_name)) == "@" . $tag_name) {
-        $bits = explode(" ", $lines[$i], 3);
+        $bits = explode(" ", $lines[$i], 2);
+        $remainder = $bits[1];
+
+        $bits = explode(" ", $remainder, 2);
+
+        // hackery to handle #method(arg1, arg2)
+        if (preg_match("/^[^ ]+\(/", $remainder)) {
+          $bits = explode(")", $remainder, 2);
+          $bits[0] .= ")";
+          $bits[1] = trim($bits[1]);
+        }
+
         switch (count($bits)) {
-          case 3:
+          case 2:
             // don't hash out inline links
-            if (substr($bits[1], 0, 1) === "{") {
-              $new_key = implode(" ", array($bits[1], $bits[2]));
+            if (substr($bits[0], 0, 1) === "{") {
+              $new_key = implode(" ", array($bits[0], $bits[1]));
               $result[$new_key] = false;
             } else {
-              $result[$bits[1]] = $bits[2];
+              $result[$bits[0]] = $bits[1];
             }
             break;
-          case 2:
-            $result[$bits[1]] = false;
+
+          case 1:
+            $result[$bits[0]] = false;
             break;
+
         }
       }
     }

@@ -62,4 +62,78 @@ class MultipleParamsApi extends Api {
 
   }
 
+  function testThrow3($arg1, $arg2, $arg3 = array()) {
+
+  }
+
+  /**
+   * @see #testThrow3($arg1, $arg2, $arg3)
+   */
+  function testSeeFullRef() {
+
+  }
+
+  /**
+   * @see #testThrow3($arg1, $arg2)
+   */
+  function testSeePartialRef() {
+
+  }
+
+  /**
+   * @see #testThrow3()
+   */
+  function testSeeLocalRef() {
+
+  }
+
+  /**
+   * @see #testThrow3
+   */
+  function testSeeLocalRefEmpty() {
+
+  }
+
+  /**
+   * @see MultipleParamsApi#testThrow3($arg1, $arg2, $arg3)
+   */
+  function testSeeFullQualifiedRef() {
+
+  }
+
+  /**
+   * @see #testThrow3($arg1, $arg2, $arg3) this is a comment
+   */
+  function testSeeFullRefWithComment() {
+
+  }
+
+  /**
+   * @see #testThrow3($arg1, $arg2) this is a comment
+   */
+  function testSeePartialRefWithComment() {
+
+  }
+
+  /**
+   * @see #testThrow3() this is a comment
+   */
+  function testSeeLocalRefWithComment() {
+
+  }
+
+  /**
+   * @see #testThrow3 this is a comment
+   */
+  function testSeeLocalRefEmptyWithComment() {
+
+  }
+
+  /**
+   * @see MultipleParamsApi#testThrow3($arg1, $arg2, $arg3) this is a comment
+   */
+  function testSeeFullQualifiedRefWithComment() {
+
+  }
+
 }

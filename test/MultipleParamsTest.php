@@ -64,4 +64,65 @@ class MultipleParamsTest extends DocCommentTest {
     ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testThrow2']['doc']['throws']);
   }
 
+  function testSeeFullRef() {
+    $this->assertEquals(array(
+      '#testThrow3($arg1, $arg2, $arg3)' => false,
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeeFullRef']['doc']['see']);
+  }
+
+  function testSeePartialRef() {
+    $this->assertEquals(array(
+      '#testThrow3($arg1, $arg2)' => false,
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeePartialRef']['doc']['see']);
+  }
+
+  function testSeeLocalRef() {
+    $this->assertEquals(array(
+      '#testThrow3()' => false,
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeeLocalRef']['doc']['see']);
+  }
+
+  function testSeeLocalRefEmpty() {
+    $this->assertEquals(array(
+      '#testThrow3' => false,
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeeLocalRefEmpty']['doc']['see']);
+  }
+
+  function testSeeFullQualifiedRef() {
+    $this->assertEquals(array(
+      'MultipleParamsApi#testThrow3($arg1, $arg2, $arg3)' => false,
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeeFullQualifiedRef']['doc']['see']);
+  }
+
+  // and the same with comments
+  function testSeeFullRefWithComment() {
+    $this->assertEquals(array(
+      '#testThrow3($arg1, $arg2, $arg3)' => "this is a comment",
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeeFullRefWithComment']['doc']['see']);
+  }
+
+  function testSeePartialRefWithComment() {
+    $this->assertEquals(array(
+      '#testThrow3($arg1, $arg2)' => "this is a comment",
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeePartialRefWithComment']['doc']['see']);
+  }
+
+  function testSeeLocalRefWithComment() {
+    $this->assertEquals(array(
+      '#testThrow3()' => "this is a comment",
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeeLocalRefWithComment']['doc']['see']);
+  }
+
+  function testSeeLocalRefEmptyWithComment() {
+    $this->assertEquals(array(
+      '#testThrow3' => "this is a comment",
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeeLocalRefEmptyWithComment']['doc']['see']);
+  }
+
+  function testSeeFullQualifiedRefWithComment() {
+    $this->assertEquals(array(
+      'MultipleParamsApi#testThrow3($arg1, $arg2, $arg3)' => "this is a comment",
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeeFullQualifiedRefWithComment']['doc']['see']);
+  }
+
 }
