@@ -23,7 +23,6 @@ and smarter and more extensible than existing solutions.
 * Generate demo docs and publish
 * Try generating docs for large projects e.g. Symfony
 * Method and class summaries should only display the first sentance of the 'title' doc
-* Display types of parameters e.g. `Logger $logger`
 * Highlight abstract classes
 * Display inherited abstract methods on abstract classes
 * `@author` tag

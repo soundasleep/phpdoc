@@ -129,7 +129,61 @@ if ($inherited) { ?>
 
 <h3>
   <small><?php echo $method->getModifiers(); ?></small>
-  <?php echo $method->getPrintableName(); ?>
+  <?php
+
+    $params = array();
+    foreach ($method->getParams() as $name => $data) {
+      $value = "";
+      if (isset($data['type']) && $data['type']) {
+        // try find the class reference
+        // e.g. Namespace\Class $arg
+        $discovered_class = $database->findClasslike($data['type'], $this->logger);
+        if (!$discovered_class) {
+          // try our local namespace
+          // e.g. Class $arg
+          $discovered_class = $database->findClasslike($class->getNamespace()->getName() . "\\" . $data['type'], $this->logger);
+        }
+
+        if ($discovered_class) {
+          $value .= $this->linkTo($discovered_class->getFilename(), $discovered_class->getPrintableName());
+          $value .= " ";
+        } else {
+          // just get the class name without namespace
+          $value .= $method->getSimpleName($data['type']) . " ";
+        }
+      }
+
+      $value .= '$' . $name;
+      if (isset($data['default'])) {
+        switch ($data['default']['type']) {
+          case "string":
+            $value .= " = \"" . $data['default']['value'] . "\"";
+            break;
+
+          case "number":
+            $value .= " = " . $data['default']['value'];
+            break;
+
+          case "array":
+            $value .= " = array(";
+            if ($data['default']['items']) {
+              $value .= "...";
+            }
+            $value .= ")";
+            break;
+
+          case "const":
+            // e.g. 'null'
+            $value .= " = " . $data['default']['name'];
+            break;
+
+        }
+      }
+      $params[] = $value;
+    }
+    echo $method->getName() . "(" . implode(", ", $params) . ")";
+
+  ?>
   <a name="<?php echo htmlspecialchars($method->getName()); ?>"></a>
 </h3>
 

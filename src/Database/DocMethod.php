@@ -49,14 +49,29 @@ class DocMethod extends AbstractDocElement {
     return $type . "_" . $this->escape($this->getClass()->getNamespace()->getName()) . "_" . $this->escape($this->getClass()->getName()) . ".html#" . $this->escape($this->getName());
   }
 
+  /**
+   * @return "Foo" for "Bar\Foo", "\Foo" or "Foo"
+   */
+  function getSimpleName($fqn) {
+    if (strpos($fqn, "\\") === false) {
+      return $fqn;
+    }
+    return substr($fqn, strrpos($fqn, "\\") + 1);
+  }
+
   function getPrintableName() {
     $params = array();
     foreach ($this->data['params'] as $name => $data) {
-      $value = '$' . $name;
+      $value = "";
+      if (isset($data['type']) && $data['type']) {
+        // just get the class name without namespace
+        $value .= $this->getSimpleName($data['type']) . " ";
+      }
+      $value .= '$' . $name;
       if (isset($data['default'])) {
         switch ($data['default']['type']) {
           case "string":
-            $value .= " = \"" . htmlspecialchars($data['default']['value']) . "\"";
+            $value .= " = \"" . $data['default']['value'] . "\"";
             break;
 
           case "number":
@@ -81,6 +96,10 @@ class DocMethod extends AbstractDocElement {
       $params[] = $value;
     }
     return $this->getName() . "(" . implode(", ", $params) . ")";
+  }
+
+  function getParams() {
+    return $this->data['params'];
   }
 
   function getElementType() {

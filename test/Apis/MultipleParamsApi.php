@@ -132,7 +132,7 @@ class MultipleParamsApi extends Api {
   /**
    * @see MultipleParamsApi#testThrow3($arg1, $arg2, $arg3) this is a comment
    */
-  function testSeeFullQualifiedRefWithComment($arg4 = 1) {
+  function testSeeFullQualifiedRefWithComment($arg4 = 1, MultipleParamsApi $arg5 = null, EmptyNamespace $arg6 = null) {
 
   }
 
