@@ -76,6 +76,7 @@ class Database extends AbstractDocElement {
   /**
    * Try to find a method with the given name, or return {@code null}
    * if none can be found.
+   * Will also look through inherited methods.
    */
   function findMethod($fqn, Logger $logger) {
     // split on #

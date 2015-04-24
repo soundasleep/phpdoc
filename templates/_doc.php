@@ -94,9 +94,9 @@ if ($doc_reference->getInheritedDoc($this->logger, 'see')) {
     }
 
     if ($discovered_class) {
-      echo $this->linkTo($discovered_class->getFilename(), $discovered_class->getName());
+      echo $this->linkTo($discovered_class->getFilename(), $discovered_class->getPrintableName());
     } else if ($discovered_method) {
-      echo $this->linkTo($discovered_method->getFilename(), $discovered_method->getName());
+      echo $this->linkTo($discovered_method->getFilename(), $discovered_method->getPrintableName());
     } else {
       echo $see_class;
     }

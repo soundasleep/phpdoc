@@ -64,8 +64,30 @@ abstract class DocClasslike extends AbstractDocElement {
     return "PHPDoc2 - " . $options['project_name'];
   }
 
+  /**
+   * Get <i>just</i> the inherited methods for this class,
+   * ignoring any methods that are already present.
+   */
   function getInheritedMethods(Logger $logger) {
-    $methods = array();
+    $methods = $this->getAllMethods($logger);
+    $our_methods = $this->getMethods();
+
+    $result = array();
+    foreach ($methods as $name => $data) {
+      if (!isset($our_methods[$name])) {
+        $result[$name] = $data;
+      }
+    }
+
+    return $result;
+  }
+
+  /**
+   * Get <i>all</i> methods, including inherited methods,
+   * that this class supports.
+   */
+  function getAllMethods(Logger $logger) {
+    $methods = $this->methods;
 
     if (isset($this->data['extends'])) {
       $class = $this->findClass($this->data['extends'], $logger);
@@ -78,16 +100,7 @@ abstract class DocClasslike extends AbstractDocElement {
       }
     }
 
-    $our_methods = $this->getMethods();
-
-    $result = array();
-    foreach ($methods as $name => $data) {
-      if (!isset($our_methods[$name])) {
-        $result[$name] = $data;
-      }
-    }
-
-    return $result;
+    return $methods;
   }
 
   /**
@@ -197,12 +210,13 @@ abstract class DocClasslike extends AbstractDocElement {
 
   /**
    * Try to find a {@link DocMethod} on this class name,
-   * or {@code null} if none can be found
+   * or {@code null} if none can be found.
+   * Will also look through inherited methods.
    */
   function findMethod($fqn, Logger $logger) {
     // ignore any arguments
     $bits = explode("(", $fqn, 2);
-    foreach ($this->getMethods() as $method) {
+    foreach ($this->getAllMethods($logger) as $method) {
       if ($method->getName() == $bits[0]) {
         return $method;
       }

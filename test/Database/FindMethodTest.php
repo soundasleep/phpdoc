@@ -50,4 +50,10 @@ class FindMethodTest extends SetupDatabase {
     $this->assertNull($method);
   }
 
+  function testFindMethodInherited() {
+    $method = $this->database->findMethod("Empty\Bar#foo", $this->logger);
+    $this->assertNotNull($method);
+    $this->assertEquals("foo", $method->getName());
+  }
+
 }

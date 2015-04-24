@@ -26,6 +26,9 @@ abstract class SetupDatabase extends \PHPUnit_Framework_TestCase {
                 ),
               ),
             ),
+            'Bar' => array(
+              'extends' => 'Empty\\Foo',
+            ),
           ),
         ),
       ),
