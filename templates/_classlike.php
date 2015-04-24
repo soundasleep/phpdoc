@@ -130,6 +130,7 @@ if ($inherited) { ?>
 <h3>
   <small><?php echo $method->getModifiers(); ?></small>
   <?php echo $method->getPrintableName(); ?>
+  <a name="<?php echo htmlspecialchars($method->getName()); ?>"></a>
 </h3>
 
 <blockquote>
