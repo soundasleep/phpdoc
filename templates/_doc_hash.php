@@ -30,7 +30,7 @@ if ($discovered_class) {
 } else if ($discovered_method) {
   echo $this->linkTo($discovered_method->getFilename(), $discovered_method->getPrintableName());
 } else {
-  echo $see_class;
+  echo $this->formatInline($doc_reference, $see_class);
 }
 
 if ($description) {

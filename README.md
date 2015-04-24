@@ -27,7 +27,6 @@ and smarter and more extensible than existing solutions.
 * Highlight abstract classes
 * Display inherited abstract methods on abstract classes
 * `@author` tag
-* `@link` tag
 * `@var` tag
 * `@inheritDoc` inline tag - might be tricky
 * Calculated _Overrides:_ for class methods
