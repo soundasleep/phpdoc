@@ -17,6 +17,10 @@ class DocClass extends DocClasslike {
     return "class";
   }
 
+  function getClass() {
+    return $this;
+  }
+
   /**
    * Get all known direct subclasses of this class.
    */
