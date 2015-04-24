@@ -36,6 +36,10 @@ interface Currency {
 
 ## Using
 
+```
+php -f phpdoc2.php -- --directory "src/" --output "docs/"
+```
+
 For easy documentation generation, you can use Grunt with the [grunt-phpdoc2](https://github.com/soundasleep/grunt-phpdoc2) task.
 For example, see the example Gruntfile provided in the [phpdoc2-openclerk](https://github.com/soundasleep/phpdoc2-openclerk/blob/gh-pages/Gruntfile.coffee).
 
