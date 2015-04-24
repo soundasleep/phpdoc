@@ -96,7 +96,7 @@ abstract class DocClasslike extends AbstractDocElement {
         $methods = array_merge($methods, $class->getMethods());
         $methods = array_merge($methods, $class->getInheritedMethods($logger));
       } else {
-        $logger->warn("Could not find parent class '" . $this->data['extends'] . "' for '" . $this->getName() . "'");
+        // $logger->warn("Could not find parent class '" . $this->data['extends'] . "' for '" . $this->getName() . "'");
       }
     }
 
