@@ -43,7 +43,7 @@ if ($doc_reference->getInheritedDoc($this->logger, 'return')) {
 if ($doc_reference->getInheritedDoc($this->logger, 'throws')) {
   echo "<dt>Throws:</dt>";
   echo "<dd>";
-  foreach ($doc_reference->getInheritedDoc($this->logger, 'throws') as $thrown_class => $description) {
+  foreach ($doc_reference->getInheritedDoc($this->logger, 'throws') as $see_class => $description) {
     require(__DIR__ . "/_doc_hash.php");
     echo "<br>";
   }
