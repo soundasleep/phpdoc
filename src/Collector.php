@@ -11,9 +11,11 @@ use Monolog\Logger;
 class Collector {
 
   var $logger;
+  var $options;
 
-  function __construct(Logger $logger) {
+  function __construct(Logger $logger, $options) {
     $this->logger = $logger;
+    $this->options = $options;
   }
 
   public function parse($dirs) {
@@ -59,7 +61,12 @@ class Collector {
   }
 
   function shouldIgnore($dir) {
-    return preg_match("#/vendor/#i", $dir);
+    foreach ($this->options['ignore'] as $ignore) {
+      if (strpos(strtolower($dir), strtolower($ignore)) !== false) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

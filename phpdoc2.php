@@ -49,7 +49,7 @@ foreach ($result as $key => $arg) {
       if (!file_exists($arg->value)) {
         throw new Exception("Config file '" . $arg->value . "' does not exist");
       }
-      $config = json_decode(file_get_contents($arg->value));
+      $config = json_decode(file_get_contents($arg->value), true /* assoc */);
       break;
 
     case "json":
@@ -70,6 +70,14 @@ if (!$dirs) {
   throw new Exception("Need to specify at least one directory with --directory switch");
 }
 
+// load default options
+$config += array(
+  'project_name' => 'Untitled',
+  'ignore' => array(
+    '/vendor/',
+  ),
+);
+
 use PHPDoc2\Collector;
 use PHPDoc2\MyLogger;
 use PHPDoc2\HtmlGenerator;
@@ -78,17 +86,12 @@ use PHPDoc2\Database\Database;
 $logger = new \Monolog\Logger("PHPDoc2");
 $logger->pushHandler(new MyLogger());
 
-$collector = new Collector($logger);
+$collector = new Collector($logger, $config);
 $result = $collector->parse($dirs);
 
 if ($json_file) {
   file_put_contents($json_file, json_encode($result, JSON_PRETTY_PRINT));
 }
-
-// load default options
-$config += array(
-  'project_name' => 'Untitled',
-);
 
 $database = new Database($config['project_name'], $result);
 $html = new HtmlGenerator($database, $config, $logger, $output_dir);
