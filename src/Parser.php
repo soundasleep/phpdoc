@@ -232,14 +232,14 @@ class Parser extends \PhpParser\NodeVisitorAbstract {
           if ($alias === (string) $param->type) {
             $param->type = $name;
           }
-        }
+      }
       }
 
       $formatted['params'][$param->name] = array(
         'type' => $param->type ? (string) $param->type : null,
         'byRef' => $param->byRef,
         'variadic' => $param->variadic,
-        'default' => $param->default,
+        'default' => $this->formatDefault($param->default),
       );
     }
 

@@ -62,7 +62,7 @@ class MultipleParamsApi extends Api {
 
   }
 
-  function testThrow3($arg1, $arg2, $arg3 = array()) {
+  function testThrow3($arg1, $arg2 = "String", $arg3 = array()) {
 
   }
 
@@ -132,7 +132,7 @@ class MultipleParamsApi extends Api {
   /**
    * @see MultipleParamsApi#testThrow3($arg1, $arg2, $arg3) this is a comment
    */
-  function testSeeFullQualifiedRefWithComment() {
+  function testSeeFullQualifiedRefWithComment($arg4 = 1) {
 
   }
 

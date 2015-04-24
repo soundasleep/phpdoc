@@ -1,5 +1,7 @@
 <?php
 
+use \PHPDoc2\Database\DocMethod;
+
 if ($doc_reference->getInheritedDoc($this->logger, 'title')) {
   echo "<p>";
   echo $this->formatInline($doc_reference, $doc_reference->getInheritedDoc($this->logger, 'title'));
@@ -27,6 +29,39 @@ if ($doc_reference->getInheritedDoc($this->logger, 'params')) {
   echo "<dd>";
   foreach ($doc_reference->getInheritedDoc($this->logger, 'params') as $param => $description) {
     echo "<code>" . $param . "</code> - " . $this->formatInline($doc_reference, $description) . "<br>";
+  }
+  echo "</dd>";
+}
+
+if ($doc_reference instanceof DocMethod && $doc_reference->getDefaults($this->logger)) {
+  echo "<dt>Defaults:</dt>";
+  echo "<dd>";
+
+  foreach ($doc_reference->getDefaults($this->logger) as $param => $description) {
+    echo "<code>" . $param . "</code> = ";
+    switch ($description['type']) {
+      case "array":
+        echo "array(";
+        if ($description['items']) {
+          echo "...";
+        }
+        echo ")";
+        break;
+
+      case "string":
+        echo "<code>\"" . $description['value'] . "\"</code>";
+        break;
+
+      case "number":
+        echo $description['value'];
+        break;
+
+      default:
+        echo $description['type'];
+        break;
+
+    }
+    echo "<br>";
   }
   echo "</dd>";
 }

@@ -52,7 +52,28 @@ class DocMethod extends AbstractDocElement {
   function getPrintableName() {
     $params = array();
     foreach ($this->data['params'] as $name => $data) {
-      $params[] = '$' . $name;
+      $value = '$' . $name;
+      if (isset($data['default'])) {
+        switch ($data['default']['type']) {
+          case "string":
+            $value .= " = \"" . htmlspecialchars($data['default']['value']) . "\"";
+            break;
+
+          case "number":
+            $value .= " = " . $data['default']['value'];
+            break;
+
+          case "array":
+            $value .= " = array(";
+            if ($data['default']['items']) {
+              $value .= "...";
+            }
+            $value .= ")";
+            break;
+
+        }
+      }
+      $params[] = $value;
     }
     return $this->getName() . "(" . implode(", ", $params) . ")";
   }
@@ -99,6 +120,16 @@ class DocMethod extends AbstractDocElement {
    */
   function findClass($name, Logger $logger) {
     return $this->getClass()->findClass($name, $logger);
+  }
+
+  function getDefaults() {
+    $result = array();
+    foreach ($this->data['params'] as $key => $value) {
+      if (isset($value['default']) && $value['default']) {
+        $result[$key] = $value['default'];
+      }
+    }
+    return $result;
   }
 
 }

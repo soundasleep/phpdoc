@@ -20,12 +20,11 @@ and smarter and more extensible than existing solutions.
 ## TODO
 
 * Look at compatibility with [phpdoc PSR standard](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
-* Provide project options e.g. project name
 * Generate demo docs and publish
 * Try generating docs for large projects e.g. Symfony
 * Method and class summaries should only display the first sentance of the 'title' doc
 * Display types of parameters e.g. `Logger $logger`
-* Methods displaying default values e.g. ` = array()`
+* Highlight abstract classes
 * Display inherited abstract methods on abstract classes
 * `@author` tag
 * `@link` tag
@@ -40,6 +39,8 @@ and smarter and more extensible than existing solutions.
 * Global functions support
 * Option for `issue #123` to link to an external issue tracker
 * Provide a `grunt` task/`bin` task
+* Link through to open source projects for composer projects
+* Link through to source code for GitHub projects
 
 ## See also
 
