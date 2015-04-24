@@ -56,6 +56,10 @@ if ($doc_reference instanceof DocMethod && $doc_reference->getDefaults($this->lo
         echo $description['value'];
         break;
 
+      case "const":
+        echo "<code>" . $description['name'] . "</code>";
+        break;
+
       default:
         echo $description['type'];
         break;

@@ -71,6 +71,11 @@ class DocMethod extends AbstractDocElement {
             $value .= ")";
             break;
 
+          case "const":
+            // e.g. 'null'
+            $value .= " = " . $data['default']['name'];
+            break;
+
         }
       }
       $params[] = $value;
