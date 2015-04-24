@@ -130,6 +130,23 @@ abstract class DocClasslike extends AbstractDocElement {
   }
 
   /**
+   * Get the class hierarchy as a list of {@link DocClass}es or strings.
+   * For interfaces, returns the interface hierarchy as a list of {@link DocInterface}s.
+   */
+  function getClassHierarchy(Logger $logger) {
+    if (isset($this->data['extends'])) {
+      $class = $this->findClass($this->data['extends'], $logger);
+      if ($class) {
+        return array_merge($class->getClassHierarchy($logger), array($class));
+      } else {
+        return array($this->data['extends']);
+      }
+    } else {
+      return array();
+    }
+  }
+
+  /**
    * Get the parent interfaces as a list of {@link DocInterface}es or strings.
    */
   function getParentInterfaces(Logger $logger) {

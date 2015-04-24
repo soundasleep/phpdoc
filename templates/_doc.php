@@ -1,7 +1,6 @@
 <?php
 
 use \PHPDoc2\Database\DocMethod;
-use \PHPDoc2\Database\DocClass;
 
 if ($doc_reference->getInheritedDoc($this->logger, 'title')) {
   echo "<p>";
@@ -25,7 +24,7 @@ if ($doc_reference->getInheritedDoc($this->logger, 'description')) {
 
 echo "<dl>";
 
-if ($doc_reference instanceof DocMethod && $doc_reference->getClass() instanceof DocClass && $doc_reference->overrides($this->logger)) {
+if ($doc_reference instanceof DocMethod && $doc_reference->overrides($this->logger)) {
   echo "<dt>Overrides:</dt>";
   echo "<dd>";
   $reference = $doc_reference->overrides($this->logger);

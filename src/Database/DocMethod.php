@@ -161,6 +161,7 @@ class DocMethod extends AbstractDocElement {
    * @return the {@link DocMethod} first overridden or {@code null}
    */
   function overrides(Logger $logger) {
+    // class method
     $hierarchy = $this->getClass()->getClassHierarchy($logger);
 
     foreach ($hierarchy as $class) {

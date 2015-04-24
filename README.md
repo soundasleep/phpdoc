@@ -28,7 +28,6 @@ and smarter and more extensible than existing solutions.
 * `@author` tag
 * `@var` tag
 * `@inheritDoc` inline tag - might be tricky
-* Calculated _Overrides:_ for class methods
 * @deprecated tag
 * Class variables
 * `{@link foo actual text}` support
