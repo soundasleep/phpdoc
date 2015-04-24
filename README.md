@@ -12,6 +12,7 @@ For example, see the example Gruntfile provided in the [phpdoc2-openclerk](https
 ## Demos
 
 * [Openclerk](http://soundasleep.github.io/phpdoc2-openclerk/docs/index.html) - [source](https://github.com/soundasleep/phpdoc2-openclerk)
+* [phpunit](http://soundasleep.github.io/phpdoc2-phpunit/docs/index.html) - [source](https://github.com/soundasleep/phpdoc2-phpunit)
 
 ## Top-level tags supported
 
