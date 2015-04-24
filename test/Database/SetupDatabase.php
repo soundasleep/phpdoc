@@ -22,13 +22,25 @@ abstract class SetupDatabase extends \PHPUnit_Framework_TestCase {
             'Foo' => array(
               'methods' => array(
                 'foo' => array(
-                  'comment' => 'Found it',
+                  'doc' => array(
+                    'title' => 'Found it',
+                  ),
                 ),
               ),
             ),
             'Bar' => array(
               'extends' => 'Empty\\Foo',
             ),
+            'Baz' => array(
+              'extends' => 'Empty\\Foo',
+              'methods' => array(
+                'foo' => array(
+                  'doc' => array(
+                    'title' => 'Overridden',
+                  ),
+                ),
+              ),
+            )
           ),
         ),
       ),

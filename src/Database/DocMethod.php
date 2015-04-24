@@ -156,4 +156,20 @@ class DocMethod extends AbstractDocElement {
     return $result;
   }
 
+  /**
+   * Does this method override any method in its parent classes?
+   * @return the {@link DocMethod} first overridden or {@code null}
+   */
+  function overrides(Logger $logger) {
+    $hierarchy = $this->getClass()->getClassHierarchy($logger);
+
+    foreach ($hierarchy as $class) {
+      if ($class instanceof DocClass && $class->hasMethod($this->getName())) {
+        return $class->getMethod($this->getName());
+      }
+    }
+
+    return null;
+  }
+
 }

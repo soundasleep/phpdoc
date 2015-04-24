@@ -48,6 +48,10 @@ abstract class DocClasslike extends AbstractDocElement {
     return $this->methods;
   }
 
+  function hasMethod($name) {
+    return isset($this->methods[$name]);
+  }
+
   function setNamespace($ns) {
     $this->namespace = $ns;
   }
@@ -93,8 +97,7 @@ abstract class DocClasslike extends AbstractDocElement {
       $class = $this->findClass($this->data['extends'], $logger);
 
       if ($class) {
-        $methods = array_merge($methods, $class->getMethods());
-        $methods = array_merge($methods, $class->getInheritedMethods($logger));
+        $methods = array_merge($class->getAllMethods($logger), $this->methods);
       } else {
         // $logger->warn("Could not find parent class '" . $this->data['extends'] . "' for '" . $this->getName() . "'");
       }
