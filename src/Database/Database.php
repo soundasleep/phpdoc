@@ -73,6 +73,23 @@ class Database extends AbstractDocElement {
     return null;
   }
 
+  /**
+   * Try to find a method with the given name, or return {@code null}
+   * if none can be found.
+   */
+  function findMethod($fqn, Logger $logger) {
+    // split on #
+    $bits = explode("#", $fqn, 2);
+    if (count($bits) == 2) {
+      $class = $this->findClasslike($bits[0], $logger);
+      if ($class) {
+        return $class->findMethod($bits[1], $logger);
+      }
+    }
+
+    return null;
+  }
+
   function getElementType() {
     throw new \Exception("Database has no element type");
   }

@@ -1,6 +1,6 @@
 <phpunit stop-on-failure="true" stop-on-error="true">
   <testsuites>
-    <testsuite name="soudnasleep/phpdoc-parser tests">
+    <testsuite name="soundasleep/phpdoc2 tests">
       <!-- loads all *Test.php -->
       <directory>test</directory>
     </testsuite>

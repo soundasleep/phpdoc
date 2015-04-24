@@ -28,6 +28,9 @@ abstract class DocClasslike extends AbstractDocElement {
     $this->data = $data;
 
     // sort
+    if (!isset($data['methods'])) {
+      $data['methods'] = array();
+    }
     ksort($data['methods']);
 
     foreach ($data['methods'] as $method => $method_data) {
@@ -189,6 +192,22 @@ abstract class DocClasslike extends AbstractDocElement {
         }
       }
     }
+    return null;
+  }
+
+  /**
+   * Try to find a {@link DocMethod} on this class name,
+   * or {@code null} if none can be found
+   */
+  function findMethod($fqn, Logger $logger) {
+    // ignore any arguments
+    $bits = explode("(", $fqn, 2);
+    foreach ($this->getMethods() as $method) {
+      if ($method->getName() == $bits[0]) {
+        return $method;
+      }
+    }
+
     return null;
   }
 
