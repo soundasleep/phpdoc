@@ -1,0 +1,31 @@
+%h1 Generated Documentation for #{$options['project_name']}
+
+%dl
+  %dt Namespaces
+  %dd = count($database->getNamespaces())
+
+  %dt Classes
+  %dd = count($database->getAllClasses())
+
+  %dt Interfaces
+  %dd = count($database->getAllInterfaces())
+
+%h2 Namespaces
+
+%ul
+  - foreach ($database->getNamespaces() as $namespace)
+    %li
+      != $generator->linkTo($namespace->getFilename(), $namespace->getPrintableName())
+
+      :php
+        $references = array();
+        if ($namespace->getInterfaces()) {
+          $references[] = $generator->plural(count($namespace->getInterfaces()), "interface");
+        }
+        if ($namespace->getClasses()) {
+          $references[] = $generator->plural(count($namespace->getClasses()), "class", "classes");
+        }
+
+      - if ($references)
+        \-
+        = implode(", ", $references)
