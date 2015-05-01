@@ -17,13 +17,13 @@
 <?php
   foreach ($database->getNamespaces() as $namespace) {
     echo "<li>";
-    echo $this->linkTo($namespace->getFilename(), $namespace->getPrintableName());
+    echo $generator->linkTo($namespace->getFilename(), $namespace->getPrintableName());
     $references = array();
     if ($namespace->getInterfaces()) {
-      $references[] = $this->plural(count($namespace->getInterfaces()), "interface");
+      $references[] = $generator->plural(count($namespace->getInterfaces()), "interface");
     }
     if ($namespace->getClasses()) {
-      $references[] = $this->plural(count($namespace->getClasses()), "class", "classes");
+      $references[] = $generator->plural(count($namespace->getClasses()), "class", "classes");
     }
     if ($references) {
       echo " - " . implode(", ", $references);

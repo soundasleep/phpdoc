@@ -4,6 +4,7 @@ namespace PHPDoc2;
 
 use PHPDoc2\Database\Database;
 use PHPDoc2\Database\DocClasslike;
+use \Pages\PageRenderer;
 
 class HtmlGenerator {
 
@@ -25,6 +26,12 @@ class HtmlGenerator {
     }
     if (!is_dir($this->output)) {
       throw new \Exception("'" . $this->output . "' is not a directory");
+    }
+
+    // set up template locations
+    PageRenderer::addTemplatesLocation(__DIR__ . "/../templates");
+    foreach ($this->options['templates'] as $template) {
+      PageRenderer::addTemplatesLocation($template);
     }
 
     // TODO delete all files within it?
@@ -64,16 +71,13 @@ class HtmlGenerator {
 
     ob_start();
 
-    // lets use PHP to make our lives easier!
-    $database = $this->database;
-    $options = $this->options;
-    foreach ($args as $key => $value) {
-      $$key = $value;
-    }
-    require(__DIR__ . "/../templates/header.php");
-    require(__DIR__ . "/../templates/" . $template . ".php");
-    require(__DIR__ . "/../templates/footer.php");
+    $args['options'] = $this->options;
+    $args['database'] = $this->database;
+    $args['generator'] = $this;
 
+    PageRenderer::header(array("title" => $title));
+    PageRenderer::requireTemplate($template, $args);
+    PageRenderer::footer();
     $contents = ob_get_contents();
     ob_end_clean();
 

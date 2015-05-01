@@ -1,6 +1,6 @@
 <h1>
   <small><?php echo $namespace->getModifiers(); ?></small>
-  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getPrintableName()); ?>
+  <?php echo $generator->linkTo($namespace->getFilename(), $namespace->getPrintableName()); ?>
 </h1>
 
 <?php
@@ -14,13 +14,13 @@ if ($namespaces) { ?>
 <?php
   foreach ($namespaces as $child) {
     echo "<li>";
-    echo $this->linkTo($child->getFilename(), $child->getPrintableName());
+    echo $generator->linkTo($child->getFilename(), $child->getPrintableName());
     $references = array();
     if ($child->getInterfaces()) {
-      $references[] = $this->plural(count($child->getInterfaces()), "interface");
+      $references[] = $generator->plural(count($child->getInterfaces()), "interface");
     }
     if ($child->getClasses()) {
-      $references[] = $this->plural(count($child->getClasses()), "class", "classes");
+      $references[] = $generator->plural(count($child->getClasses()), "class", "classes");
     }
     if ($references) {
       echo " - " . implode(", ", $references);
@@ -46,8 +46,8 @@ if ($namespaces) { ?>
   <tbody>
 <?php foreach ($namespace->getInterfaces() as $class) {
   echo "<tr>";
-  echo "<td>" . $this->linkTo($class->getFilename(), $class->getName()) . "</td>";
-  echo "<td>" . $this->formatInline($class, $class->getInheritedDoc($this->logger, 'title')) . "</td>";
+  echo "<td>" . $generator->linkTo($class->getFilename(), $class->getName()) . "</td>";
+  echo "<td>" . $generator->formatInline($class, $class->getInheritedDoc($generator->logger, 'title')) . "</td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -69,8 +69,8 @@ if ($namespaces) { ?>
   <tbody>
 <?php foreach ($namespace->getClasses() as $class) {
   echo "<tr>";
-  echo "<td>" . $this->linkTo($class->getFilename(), $class->getName()) . "</td>";
-  echo "<td>" . $this->formatInline($class, $class->getInheritedDoc($this->logger, 'title')) . "</td>";
+  echo "<td>" . $generator->linkTo($class->getFilename(), $class->getName()) . "</td>";
+  echo "<td>" . $generator->formatInline($class, $class->getInheritedDoc($generator->logger, 'title')) . "</td>";
   echo "</tr>";
 } ?>
   </tbody>

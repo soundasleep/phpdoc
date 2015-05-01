@@ -1,23 +1,23 @@
 <h1>
   <small><?php echo $class->getModifiers(); ?></small>
 
-  <?php echo $this->linkTo($namespace->getFilename(), $namespace->getPrintableName()); ?>
+  <?php echo $generator->linkTo($namespace->getFilename(), $namespace->getPrintableName()); ?>
   \
-  <?php echo $this->linkTo($class->getFilename(), $class->getName()); ?>
+  <?php echo $generator->linkTo($class->getFilename(), $class->getName()); ?>
 </h1>
 
-<?php if ($class->getParentInterfaces($this->logger)) { ?>
+<?php if ($class->getParentInterfaces($generator->logger)) { ?>
 
 <dl>
   <dt>All implemented interfaces:</dt>
   <dd>
     <?php
     $result = array();
-    foreach ($class->getParentInterfaces($this->logger) as $ref) {
+    foreach ($class->getParentInterfaces($generator->logger) as $ref) {
       if (is_string($ref)) {
         $result[] = $ref;
       } else {
-        $result[] = $this->linkTo($ref->getFilename(), $ref->getName());
+        $result[] = $generator->linkTo($ref->getFilename(), $ref->getName());
       }
     }
     echo implode(", ", $result);
@@ -27,18 +27,18 @@
 
 <?php } ?>
 
-<?php if ($class->getKnownImplementations($this->logger)) { ?>
+<?php if ($class->getKnownImplementations($generator->logger)) { ?>
 
 <dl>
   <dt>All known implementing classes:</dt>
   <dd>
     <?php
     $result = array();
-    foreach ($class->getKnownImplementations($this->logger) as $ref) {
+    foreach ($class->getKnownImplementations($generator->logger) as $ref) {
       if (is_string($ref)) {
         $result[] = $ref;
       } else {
-        $result[] = $this->linkTo($ref->getFilename(), $ref->getName());
+        $result[] = $generator->linkTo($ref->getFilename(), $ref->getName());
       }
     }
     echo implode(", ", $result);
@@ -48,18 +48,18 @@
 
 <?php } ?>
 
-<?php if ($class->getDirectSubclasses($this->logger)) { ?>
+<?php if ($class->getDirectSubclasses($generator->logger)) { ?>
 
 <dl>
   <dt>All known direct subclasses:</dt>
   <dd>
     <?php
     $result = array();
-    foreach ($class->getDirectSubclasses($this->logger) as $ref) {
+    foreach ($class->getDirectSubclasses($generator->logger) as $ref) {
       if (is_string($ref)) {
         $result[] = $ref;
       } else {
-        $result[] = $this->linkTo($ref->getFilename(), $ref->getName());
+        $result[] = $generator->linkTo($ref->getFilename(), $ref->getName());
       }
     }
     echo implode(", ", $result);
@@ -90,8 +90,8 @@ require(__DIR__ . "/_doc.php");
   <tbody>
 <?php foreach ($class->getMethods() as $method) {
   echo "<tr>";
-  echo "<td>" . $this->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
-  echo "<td>" . $this->formatInline($method, $method->getInheritedDoc($this->logger, 'title')) . "</td>";
+  echo "<td>" . $generator->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
+  echo "<td>" . $generator->formatInline($method, $method->getInheritedDoc($generator->logger, 'title')) . "</td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -99,7 +99,7 @@ require(__DIR__ . "/_doc.php");
 
 <?php
 
-$inherited = $class->getInheritedMethods($this->logger);
+$inherited = $class->getInheritedMethods($generator->logger);
 if ($inherited) { ?>
 
 <h2>Inherited Method Summary</h2>
@@ -114,8 +114,8 @@ if ($inherited) { ?>
   <tbody>
 <?php foreach ($inherited as $method) {
   echo "<tr>";
-  echo "<td>" . $this->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
-  echo "<td>" . $this->formatInline($method, $method->getInheritedDoc($this->logger, 'title')) . " <i>(from " . $this->linkTo($method->getFilename(), $method->getClass()->getName()) . ")</i></td>";
+  echo "<td>" . $generator->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
+  echo "<td>" . $generator->formatInline($method, $method->getInheritedDoc($generator->logger, 'title')) . " <i>(from " . $generator->linkTo($method->getFilename(), $method->getClass()->getName()) . ")</i></td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -137,15 +137,15 @@ if ($inherited) { ?>
       if (isset($data['type']) && $data['type']) {
         // try find the class reference
         // e.g. Namespace\Class $arg
-        $discovered_class = $database->findClasslike($data['type'], $this->logger);
+        $discovered_class = $database->findClasslike($data['type'], $generator->logger);
         if (!$discovered_class) {
           // try our local namespace
           // e.g. Class $arg
-          $discovered_class = $database->findClasslike($class->getNamespace()->getName() . "\\" . $data['type'], $this->logger);
+          $discovered_class = $database->findClasslike($class->getNamespace()->getName() . "\\" . $data['type'], $generator->logger);
         }
 
         if ($discovered_class) {
-          $value .= $this->linkTo($discovered_class->getFilename(), $discovered_class->getPrintableName());
+          $value .= $generator->linkTo($discovered_class->getFilename(), $discovered_class->getPrintableName());
           $value .= " ";
         } else {
           // just get the class name without namespace
