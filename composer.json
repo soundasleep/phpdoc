@@ -10,7 +10,8 @@
   "require": {
     "nikic/php-parser": "~1.0.2",
     "monolog/monolog": "~1.13",
-    "corneltek/getoptionkit": "~2.0"
+    "corneltek/getoptionkit": "~2.0",
+    "openclerk/pages": "^0.2.0"
   },
   "require-dev": {
     "soundasleep/component-tests": "dev-master"
