@@ -15,17 +15,4 @@
 %ul
   - foreach ($database->getNamespaces() as $namespace)
     %li
-      != $generator->linkTo($namespace->getFilename(), $namespace->getPrintableName())
-
-      :php
-        $references = array();
-        if ($namespace->getInterfaces()) {
-          $references[] = $generator->plural(count($namespace->getInterfaces()), "interface");
-        }
-        if ($namespace->getClasses()) {
-          $references[] = $generator->plural(count($namespace->getClasses()), "class", "classes");
-        }
-
-      - if ($references)
-        \-
-        = implode(", ", $references)
+      != \Pages\PageRenderer::requireTemplate("_inline_namespace", array('namespace' => $namespace) + $args)

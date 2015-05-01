@@ -1,0 +1,11 @@
+%table
+  %thead
+    %tr
+      %th Name
+      %th Description
+
+  %tbody
+    - foreach ($classes as $class)
+      %tr
+        %td != $generator->linkTo($class->getFilename(), $class->getName())
+        %td != $generator->formatInline($class, $class->getInheritedDoc($logger, 'title'))

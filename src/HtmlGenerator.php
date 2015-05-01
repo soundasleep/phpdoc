@@ -75,6 +75,7 @@ class HtmlGenerator {
     $args['database'] = $this->database;
     $args['logger'] = $this->logger;
     $args['generator'] = $this;
+    $args['args'] = $args;    // so we can refer to them in child templates
 
     PageRenderer::header(array("title" => $title));
     PageRenderer::requireTemplate($template, $args);
