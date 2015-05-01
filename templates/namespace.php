@@ -47,7 +47,7 @@ if ($namespaces) { ?>
 <?php foreach ($namespace->getInterfaces() as $class) {
   echo "<tr>";
   echo "<td>" . $generator->linkTo($class->getFilename(), $class->getName()) . "</td>";
-  echo "<td>" . $generator->formatInline($class, $class->getInheritedDoc($generator->logger, 'title')) . "</td>";
+  echo "<td>" . $generator->formatInline($class, $class->getInheritedDoc($logger, 'title')) . "</td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -70,7 +70,7 @@ if ($namespaces) { ?>
 <?php foreach ($namespace->getClasses() as $class) {
   echo "<tr>";
   echo "<td>" . $generator->linkTo($class->getFilename(), $class->getName()) . "</td>";
-  echo "<td>" . $generator->formatInline($class, $class->getInheritedDoc($generator->logger, 'title')) . "</td>";
+  echo "<td>" . $generator->formatInline($class, $class->getInheritedDoc($logger, 'title')) . "</td>";
   echo "</tr>";
 } ?>
   </tbody>

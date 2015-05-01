@@ -6,14 +6,14 @@
   <?php echo $generator->linkTo($class->getFilename(), $class->getName()); ?>
 </h1>
 
-<?php if ($class->getParentInterfaces($generator->logger)) { ?>
+<?php if ($class->getParentInterfaces($logger)) { ?>
 
 <dl>
   <dt>All implemented interfaces:</dt>
   <dd>
     <?php
     $result = array();
-    foreach ($class->getParentInterfaces($generator->logger) as $ref) {
+    foreach ($class->getParentInterfaces($logger) as $ref) {
       if (is_string($ref)) {
         $result[] = $ref;
       } else {
@@ -27,14 +27,14 @@
 
 <?php } ?>
 
-<?php if ($class->getKnownImplementations($generator->logger)) { ?>
+<?php if ($class->getKnownImplementations($logger)) { ?>
 
 <dl>
   <dt>All known implementing classes:</dt>
   <dd>
     <?php
     $result = array();
-    foreach ($class->getKnownImplementations($generator->logger) as $ref) {
+    foreach ($class->getKnownImplementations($logger) as $ref) {
       if (is_string($ref)) {
         $result[] = $ref;
       } else {
@@ -48,14 +48,14 @@
 
 <?php } ?>
 
-<?php if ($class->getDirectSubclasses($generator->logger)) { ?>
+<?php if ($class->getDirectSubclasses($logger)) { ?>
 
 <dl>
   <dt>All known direct subclasses:</dt>
   <dd>
     <?php
     $result = array();
-    foreach ($class->getDirectSubclasses($generator->logger) as $ref) {
+    foreach ($class->getDirectSubclasses($logger) as $ref) {
       if (is_string($ref)) {
         $result[] = $ref;
       } else {
@@ -91,7 +91,7 @@ require(__DIR__ . "/_doc.php");
 <?php foreach ($class->getMethods() as $method) {
   echo "<tr>";
   echo "<td>" . $generator->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
-  echo "<td>" . $generator->formatInline($method, $method->getInheritedDoc($generator->logger, 'title')) . "</td>";
+  echo "<td>" . $generator->formatInline($method, $method->getInheritedDoc($logger, 'title')) . "</td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -99,7 +99,7 @@ require(__DIR__ . "/_doc.php");
 
 <?php
 
-$inherited = $class->getInheritedMethods($generator->logger);
+$inherited = $class->getInheritedMethods($logger);
 if ($inherited) { ?>
 
 <h2>Inherited Method Summary</h2>
@@ -115,7 +115,7 @@ if ($inherited) { ?>
 <?php foreach ($inherited as $method) {
   echo "<tr>";
   echo "<td>" . $generator->linkTo($method->getFilename(), $method->getPrintableName()) . "</td>";
-  echo "<td>" . $generator->formatInline($method, $method->getInheritedDoc($generator->logger, 'title')) . " <i>(from " . $generator->linkTo($method->getFilename(), $method->getClass()->getName()) . ")</i></td>";
+  echo "<td>" . $generator->formatInline($method, $method->getInheritedDoc($logger, 'title')) . " <i>(from " . $generator->linkTo($method->getFilename(), $method->getClass()->getName()) . ")</i></td>";
   echo "</tr>";
 } ?>
   </tbody>
@@ -137,11 +137,11 @@ if ($inherited) { ?>
       if (isset($data['type']) && $data['type']) {
         // try find the class reference
         // e.g. Namespace\Class $arg
-        $discovered_class = $database->findClasslike($data['type'], $generator->logger);
+        $discovered_class = $database->findClasslike($data['type'], $logger);
         if (!$discovered_class) {
           // try our local namespace
           // e.g. Class $arg
-          $discovered_class = $database->findClasslike($class->getNamespace()->getName() . "\\" . $data['type'], $generator->logger);
+          $discovered_class = $database->findClasslike($class->getNamespace()->getName() . "\\" . $data['type'], $logger);
         }
 
         if ($discovered_class) {

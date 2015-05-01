@@ -73,6 +73,7 @@ class HtmlGenerator {
 
     $args['options'] = $this->options;
     $args['database'] = $this->database;
+    $args['logger'] = $this->logger;
     $args['generator'] = $this;
 
     PageRenderer::header(array("title" => $title));

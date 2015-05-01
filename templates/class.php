@@ -1,5 +1,5 @@
 <?php
-foreach ($class->getClassHierarchy($generator->logger) as $superclass) {
+foreach ($class->getClassHierarchy($logger) as $superclass) {
   echo "<ul class=\"class-hierarchy\"><li>";
   if (is_string($superclass)) {
     echo $superclass;
@@ -8,7 +8,7 @@ foreach ($class->getClassHierarchy($generator->logger) as $superclass) {
   }
 }
 echo "<ul><li>" . $class->getNamespace()->getName() . "\\" . $class->getName() . "</li></ul>";
-foreach ($class->getClassHierarchy($generator->logger) as $superclass) {
+foreach ($class->getClassHierarchy($logger) as $superclass) {
   echo "</li></ul>";
 }
 ?>
