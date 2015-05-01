@@ -43,6 +43,10 @@ php -f phpdoc2.php -- --directory "src/" --output "docs/"
 For easy documentation generation, you can use Grunt with the [grunt-phpdoc2](https://github.com/soundasleep/grunt-phpdoc2) task.
 For example, see the example Gruntfile provided in the [phpdoc2-openclerk](https://github.com/soundasleep/phpdoc2-openclerk/blob/gh-pages/Gruntfile.coffee).
 
+## Templates
+
+To override or extend these templates, add `--templates "dir"`. The generator will add this directory of templates to override the default ones. Uses [openclerk/pages](https://github.com/soundasleep/openclerk/pages), which means you can call subtemplates.
+
 ## Demos
 
 * [Openclerk](http://soundasleep.github.io/phpdoc2-openclerk/docs/index.html) - [source](https://github.com/soundasleep/phpdoc2-openclerk)
