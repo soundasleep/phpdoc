@@ -1,0 +1,108 @@
+- if ($doc_reference->getInheritedDoc($logger, 'title'))
+  %p
+    != $generator->formatInline($doc_reference, $doc_reference->getInheritedDoc($logger, 'title'))
+
+    :php
+      $reference = $doc_reference->getInheritedDocElement($logger, 'title')
+
+    - if ($reference != $doc_reference)
+      %i != "(from " . $generator->linkTo($reference->getFilename(), $reference->getName()) . ")"
+
+
+- if ($doc_reference->getInheritedDoc($logger, 'description'))
+  %p
+    != str_replace("\n", "</p><p>", $generator->formatInline($doc_reference, $doc_reference->getInheritedDoc($logger, 'description')))
+
+    :php
+      $reference = $doc_reference->getInheritedDocElement($logger, 'description')
+
+    - if ($reference != $doc_reference)
+      %i != "(from " . $generator->linkTo($reference->getFilename(), $reference->getName()) . ")"
+
+%dl
+  - if ($doc_reference instanceof PHPDoc2\Database\DocMethod && $doc_reference->overrides($logger))
+    %dt Overrides:
+    %dd
+      :php
+        $reference = $doc_reference->overrides($logger);
+        echo $generator->linkTo($reference->getFilename(), $reference->getPrintableName());
+
+  - if ($doc_reference->getInheritedDoc($logger, 'params'))
+    %dt Parameters:
+    %dd
+      - foreach ($doc_reference->getInheritedDoc($logger, 'params') as $param => $description)
+        %code = $param
+        \-
+        != $generator->formatInline($doc_reference, $description)
+        %br
+
+// if ($doc_reference instanceof DocMethod && $doc_reference->getDefaults($logger)) {
+//   echo "<dt>Defaults:</dt>";
+//   echo "<dd>";
+
+//   foreach ($doc_reference->getDefaults($logger) as $param => $description) {
+//     echo "<code>" . $param . "</code> = ";
+//     switch ($description['type']) {
+//       case "array":
+//         echo "array(";
+//         if ($description['items']) {
+//           echo "...";
+//         }
+//         echo ")";
+//         break;
+
+//       case "string":
+//         echo "<code>\"" . $description['value'] . "\"</code>";
+//         break;
+
+//       case "number":
+//         echo $description['value'];
+//         break;
+
+//       case "const":
+//         echo "<code>" . $description['name'] . "</code>";
+//         break;
+
+//       default:
+//         echo $description['type'];
+//         break;
+
+//     }
+//     echo "<br>";
+//   }
+//   echo "</dd>";
+// }
+
+// if ($doc_reference->getInheritedDoc($logger, 'return')) {
+//   echo "<dt>Returns:</dt>";
+//   echo "<dd>";
+//   foreach ($doc_reference->getInheritedDoc($logger, 'return') as $description) {
+//     echo $generator->formatInline($doc_reference, $description) . "<br>";
+//   }
+//   echo "</dd>";
+// }
+
+// if ($doc_reference->getInheritedDoc($logger, 'throws')) {
+//   echo "<dt>Throws:</dt>";
+//   echo "<dd>";
+//   foreach ($doc_reference->getInheritedDoc($logger, 'throws') as $see_class => $description) {
+//     require(__DIR__ . "/_doc_hash.php");
+//     echo "<br>";
+//   }
+//   echo "</dd>";
+// }
+
+// if ($doc_reference->getInheritedDoc($logger, 'see')) {
+//   echo "<dt>See Also:</dt>";
+//   echo "<dd>";
+
+//   foreach ($doc_reference->getInheritedDoc($logger, 'see') as $see_class => $description) {
+//     require(__DIR__ . "/_doc_hash.php");
+//     echo "<br>";
+//   }
+//   echo "</dd>";
+// }
+
+// echo "</dl>";
+
+// ?>
