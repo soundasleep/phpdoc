@@ -8,14 +8,14 @@
   %ul
     - foreach ($namespace->getChildNamespaces() as $child)
       %li
-        != \Pages\PageRenderer::requireTemplate("_inline_namespace", array('namespace' => $child) + $args)
+        != \Pages\PageRenderer::requireTemplate("_inline_namespace", array('namespace' => $child))
 
 - if ($namespace->getInterfaces())
   %h2 Interfaces
 
-  != \Pages\PageRenderer::requireTemplate("_inline_class_list", array('classes' => $namespace->getInterfaces()) + $args)
+  != \Pages\PageRenderer::requireTemplate("_inline_class_list", array('classes' => $namespace->getInterfaces()))
 
 - if ($namespace->getClasses())
   %h2 Classes
 
-  != \Pages\PageRenderer::requireTemplate("_inline_class_list", array('classes' => $namespace->getClasses()) + $args)
+  != \Pages\PageRenderer::requireTemplate("_inline_class_list", array('classes' => $namespace->getClasses()))

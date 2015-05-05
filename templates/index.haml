@@ -15,4 +15,4 @@
 %ul
   - foreach ($database->getNamespaces() as $namespace)
     %li
-      != \Pages\PageRenderer::requireTemplate("_inline_namespace", array('namespace' => $namespace) + $args)
+      != \Pages\PageRenderer::requireTemplate("_inline_namespace", array('namespace' => $namespace))
