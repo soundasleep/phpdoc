@@ -4,6 +4,7 @@ namespace PHPDoc2;
 
 use PHPDoc2\Database\Database;
 use PHPDoc2\Database\DocClasslike;
+use PHPDoc2\Database\DocMethod;
 use \Pages\PageRenderer;
 
 class HtmlGenerator {
@@ -202,6 +203,65 @@ class HtmlGenerator {
       return $this->linkTo($method->getFilename(), "#" . $method->getName() . "()");
     }
     return "#" . $matches[1];
+  }
+
+  /**
+   * Get a printed representation of the method signature,
+   * with links to parameter types as possible.
+   */
+  public function printMethod(DocMethod $method) {
+    $params = array();
+    foreach ($method->getParams() as $name => $data) {
+      $value = "";
+      if (isset($data['type']) && $data['type']) {
+        // try find the class reference
+        // e.g. Namespace\Class $arg
+        $discovered_class = $this->database->findClasslike($data['type'], $this->logger);
+        if (!$discovered_class) {
+          // try our local namespace
+          // e.g. Class $arg
+          $discovered_class = $this->database->findClasslike($method->getClass()->getNamespace()->getName() . "\\" . $data['type'], $this->logger);
+        }
+
+        if ($discovered_class) {
+          $value .= $this->linkTo($discovered_class->getFilename(), $discovered_class->getPrintableName());
+          $value .= " ";
+        } else {
+          // just get the class name without namespace
+          $value .= $method->getSimpleName($data['type']) . " ";
+        }
+      }
+
+      $value .= '$' . $name;
+      if (isset($data['default'])) {
+        switch ($data['default']['type']) {
+          case "string":
+            $value .= " = \"" . $data['default']['value'] . "\"";
+            break;
+
+          case "number":
+            $value .= " = " . $data['default']['value'];
+            break;
+
+          case "array":
+            $value .= " = array(";
+            if ($data['default']['items']) {
+              $value .= "...";
+            }
+            $value .= ")";
+            break;
+
+          case "const":
+            // e.g. 'null'
+            $value .= " = " . $data['default']['name'];
+            break;
+
+        }
+      }
+      $params[] = $value;
+    }
+
+    return $method->getName() . "(" . implode(", ", $params) . ")";
   }
 
 }
