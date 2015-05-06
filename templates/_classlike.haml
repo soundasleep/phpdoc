@@ -1,0 +1,104 @@
+%h1
+  %small = $class->getModifiers()
+
+  != $generator->linkTo($namespace->getFilename(), $namespace->getPrintableName())
+  = "\\"
+  != $generator->linkTo($class->getFilename(), $class->getName())
+
+- if ($class->getParentInterfaces($logger))
+  %dl
+    %dt All implemented interfaces:
+    %dd
+      :php
+        $result = array();
+        foreach ($class->getParentInterfaces($logger) as $ref) {
+          if (is_string($ref)) {
+            $result[] = $ref;
+          } else {
+            $result[] = $generator->linkTo($ref->getFilename(), $ref->getName());
+          }
+        }
+
+      != implode(", ", $result)
+
+- if ($class->getKnownImplementations($logger))
+  %dl
+    %dt All known implementing classes:
+    %dd
+      :php
+        $result = array();
+        foreach ($class->getKnownImplementations($logger) as $ref) {
+          if (is_string($ref)) {
+            $result[] = $ref;
+          } else {
+            $result[] = $generator->linkTo($ref->getFilename(), $ref->getName());
+          }
+        }
+
+      != implode(", ", $result)
+
+- if ($class->getDirectSubclasses($logger))
+  %dl
+    %dt All known direct subclasses:
+    %dd
+      :php
+        $result = array();
+        foreach ($class->getDirectSubclasses($logger) as $ref) {
+          if (is_string($ref)) {
+            $result[] = $ref;
+          } else {
+            $result[] = $generator->linkTo($ref->getFilename(), $ref->getName());
+          }
+        }
+
+      != implode(",", $result)
+
+%hr
+
+!= \Pages\PageRenderer::requireTemplate("_doc", array('doc_reference' => $class))
+
+%hr
+
+%h2 Method Summary
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Description
+
+  %tbody
+    - foreach ($class->getMethods() as $method)
+      %tr
+        %td != $generator->linkTo($method->getFilename(), $method->getPrintableName())
+        %td != $generator->formatInline($method, $method->getInheritedDoc($logger, 'title'))
+
+- if ($class->getInheritedMethods($logger))
+
+  %h2 Inherited Method Summary
+
+  %table
+    %thead
+      %tr
+        %th Name
+        %th Description
+
+    %tbody
+      - foreach ($class->getInheritedMethods($logger) as $method)
+        %tr
+          %td != $generator->linkTo($method->getFilename(), $method->getPrintableName())
+          %td
+            != $generator->formatInline($method, $method->getInheritedDoc($logger, 'title'))
+            %i != "(from " . $generator->linkTo($method->getFilename(), $method->getClass()->getName()) . ")"
+
+- foreach ($class->getMethods() as $method)
+
+  %hr
+
+  %h3
+    %small = $method->getModifiers()
+    != $generator->printMethod($method)
+    %a{:name => $method->getName()}
+
+  %blockquote
+    != \Pages\PageRenderer::requireTemplate("_doc", array('doc_reference' => $method))

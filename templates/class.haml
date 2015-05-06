@@ -1,0 +1,17 @@
+- foreach ($class->getClassHierarchy($logger) as $superclass)
+  != '<ul class="class-hierarchy">'
+  != '<li>'
+  - if (is_string($superclass))
+    = $superclass
+  - else
+    != $generator->linkTo($superclass->getFilename(), $superclass->getNamespace()->getName() . "\\" .  $superclass->getName())
+
+%ul
+  %li
+    = $class->getNamespace()->getName() . "\\" . $class->getName()
+
+- foreach ($class->getClassHierarchy($logger) as $superclass)
+  != '</li>'
+  != '</ul>'
+
+!= \Pages\PageRenderer::requireTemplate("_classlike")

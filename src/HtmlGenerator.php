@@ -4,6 +4,8 @@ namespace PHPDoc2;
 
 use PHPDoc2\Database\Database;
 use PHPDoc2\Database\DocClasslike;
+use PHPDoc2\Database\DocMethod;
+use \Pages\PageRenderer;
 
 class HtmlGenerator {
 
@@ -26,6 +28,13 @@ class HtmlGenerator {
     if (!is_dir($this->output)) {
       throw new \Exception("'" . $this->output . "' is not a directory");
     }
+
+    // set up template locations
+    PageRenderer::addTemplatesLocation(__DIR__ . "/../templates");
+    foreach ($this->options['templates'] as $template) {
+      PageRenderer::addTemplatesLocation($template);
+    }
+    PageRenderer::addStylesheet("default.css");
 
     // TODO delete all files within it?
 
@@ -64,21 +73,18 @@ class HtmlGenerator {
 
     ob_start();
 
-    // lets use PHP to make our lives easier!
-    $database = $this->database;
-    $options = $this->options;
-    foreach ($args as $key => $value) {
-      $$key = $value;
-    }
-    require(__DIR__ . "/../templates/header.php");
-    require(__DIR__ . "/../templates/" . $template . ".php");
-    require(__DIR__ . "/../templates/footer.php");
+    $args['options'] = $this->options;
+    $args['database'] = $this->database;
+    $args['logger'] = $this->logger;
+    $args['generator'] = $this;
 
+    PageRenderer::header(array("title" => $title));
+    PageRenderer::requireTemplate($template, $args);
+    PageRenderer::footer();
     $contents = ob_get_contents();
     ob_end_clean();
 
     file_put_contents($_file, $contents);
-
   }
 
   function linkTo($url, $title, $classes = array()) {
@@ -196,6 +202,89 @@ class HtmlGenerator {
       return $this->linkTo($method->getFilename(), "#" . $method->getName() . "()");
     }
     return "#" . $matches[1];
+  }
+
+  /**
+   * Get a printed representation of the method signature,
+   * with links to parameter types as possible.
+   */
+  public function printMethod(DocMethod $method) {
+    $params = array();
+    foreach ($method->getParams() as $name => $data) {
+      $value = "";
+      if (isset($data['type']) && $data['type']) {
+        // try find the class reference
+        // e.g. Namespace\Class $arg
+        $discovered_class = $this->database->findClasslike($data['type'], $this->logger);
+        if (!$discovered_class) {
+          // try our local namespace
+          // e.g. Class $arg
+          $discovered_class = $this->database->findClasslike($method->getClass()->getNamespace()->getName() . "\\" . $data['type'], $this->logger);
+        }
+
+        if ($discovered_class) {
+          $value .= $this->linkTo($discovered_class->getFilename(), $discovered_class->getPrintableName());
+          $value .= " ";
+        } else {
+          // just get the class name without namespace
+          $value .= $method->getSimpleName($data['type']) . " ";
+        }
+      }
+
+      $value .= '$' . $name;
+      if (isset($data['default'])) {
+        switch ($data['default']['type']) {
+          case "string":
+            $value .= " = \"" . $data['default']['value'] . "\"";
+            break;
+
+          case "number":
+            $value .= " = " . $data['default']['value'];
+            break;
+
+          case "array":
+            $value .= " = array(";
+            if ($data['default']['items']) {
+              $value .= "...";
+            }
+            $value .= ")";
+            break;
+
+          case "const":
+            // e.g. 'null'
+            $value .= " = " . $data['default']['name'];
+            break;
+
+        }
+      }
+      $params[] = $value;
+    }
+
+    return $method->getName() . "(" . implode(", ", $params) . ")";
+  }
+
+  function formatDefault($description) {
+    switch ($description['type']) {
+      case "array":
+        $result = "array(";
+        if ($description['items']) {
+          $result .=  "...";
+        }
+        $result .= ")";
+        return $result;
+
+      case "string":
+        return "<code>\"" . $description['value'] . "\"</code>";
+
+      case "number":
+        return $description['value'];
+
+      case "const":
+        return "<code>" . $description['name'] . "</code>";
+
+      default:
+        return $description['type'];
+    }
   }
 
 }

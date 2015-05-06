@@ -1,0 +1,18 @@
+%h1 Generated Documentation for #{$options['project_name']}
+
+%dl
+  %dt Namespaces
+  %dd = count($database->getNamespaces())
+
+  %dt Classes
+  %dd = count($database->getAllClasses())
+
+  %dt Interfaces
+  %dd = count($database->getAllInterfaces())
+
+%h2 Namespaces
+
+%ul
+  - foreach ($database->getNamespaces() as $namespace)
+    %li
+      != \Pages\PageRenderer::requireTemplate("_inline_namespace", array('namespace' => $namespace))

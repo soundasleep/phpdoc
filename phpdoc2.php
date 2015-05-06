@@ -19,6 +19,7 @@ $specs->add('d|directory+', 'PHP directories to parse');
 $specs->add('c|config?', 'Config JSON');
 $specs->add('j|json?', 'Options database as JSON to file');
 $specs->add('o|output?', 'Output HTML to given directory');
+$specs->add('t|templates+', 'Add template directories');
 $specs->add('help', 'Display help');
 
 $parser = new OptionParser($specs);
@@ -32,14 +33,26 @@ if (isset($result['help'])) {
 
 // now parse
 $dirs = array();
-$config = array();
 $json_file = false;
 $output_dir = "docs/";
+
+// load default options
+$config = array(
+  'project_name' => 'Untitled',
+  'ignore' => array(
+    '/vendor/',
+  ),
+  'templates' => array(),
+);
 
 foreach ($result as $key => $arg) {
   switch ($key) {
     case "directory":
       $dirs = $arg->value;
+      break;
+
+    case "templates":
+      $config['templates'] = $arg->value;
       break;
 
     case "config":
@@ -69,14 +82,6 @@ foreach ($result as $key => $arg) {
 if (!$dirs) {
   throw new Exception("Need to specify at least one directory with --directory switch");
 }
-
-// load default options
-$config += array(
-  'project_name' => 'Untitled',
-  'ignore' => array(
-    '/vendor/',
-  ),
-);
 
 use PHPDoc2\Collector;
 use PHPDoc2\MyLogger;
