@@ -36,73 +36,31 @@
         != $generator->formatInline($doc_reference, $description)
         %br
 
-// if ($doc_reference instanceof DocMethod && $doc_reference->getDefaults($logger)) {
-//   echo "<dt>Defaults:</dt>";
-//   echo "<dd>";
+  - if ($doc_reference instanceof PHPDoc2\Database\DocMethod && $doc_reference->getDefaults($logger))
+    %dt Defaults:
+    %dd
+      - foreach ($doc_reference->getDefaults($logger) as $param => $description)
+        %code = $param
+        != $generator->formatDefault($description);
+        %br
 
-//   foreach ($doc_reference->getDefaults($logger) as $param => $description) {
-//     echo "<code>" . $param . "</code> = ";
-//     switch ($description['type']) {
-//       case "array":
-//         echo "array(";
-//         if ($description['items']) {
-//           echo "...";
-//         }
-//         echo ")";
-//         break;
+  - if ($doc_reference->getInheritedDoc($logger, 'return'))
+    %dt Returns:
+    %dd
+      - foreach ($doc_reference->getInheritedDoc($logger, 'return') as $description)
+        != $generator->formatInline($doc_reference, $description)
+        %br
 
-//       case "string":
-//         echo "<code>\"" . $description['value'] . "\"</code>";
-//         break;
+  - if ($doc_reference->getInheritedDoc($logger, 'throws'))
+    %dt Throws:
+    %dd
+      - foreach ($doc_reference->getInheritedDoc($logger, 'throws') as $see_class => $description)
+        != \Pages\PageRenderer::requireTemplate("_doc_hash", array('see_class' => $see_class, 'description' => $description))
+        %br
 
-//       case "number":
-//         echo $description['value'];
-//         break;
-
-//       case "const":
-//         echo "<code>" . $description['name'] . "</code>";
-//         break;
-
-//       default:
-//         echo $description['type'];
-//         break;
-
-//     }
-//     echo "<br>";
-//   }
-//   echo "</dd>";
-// }
-
-// if ($doc_reference->getInheritedDoc($logger, 'return')) {
-//   echo "<dt>Returns:</dt>";
-//   echo "<dd>";
-//   foreach ($doc_reference->getInheritedDoc($logger, 'return') as $description) {
-//     echo $generator->formatInline($doc_reference, $description) . "<br>";
-//   }
-//   echo "</dd>";
-// }
-
-// if ($doc_reference->getInheritedDoc($logger, 'throws')) {
-//   echo "<dt>Throws:</dt>";
-//   echo "<dd>";
-//   foreach ($doc_reference->getInheritedDoc($logger, 'throws') as $see_class => $description) {
-//     require(__DIR__ . "/_doc_hash.php");
-//     echo "<br>";
-//   }
-//   echo "</dd>";
-// }
-
-// if ($doc_reference->getInheritedDoc($logger, 'see')) {
-//   echo "<dt>See Also:</dt>";
-//   echo "<dd>";
-
-//   foreach ($doc_reference->getInheritedDoc($logger, 'see') as $see_class => $description) {
-//     require(__DIR__ . "/_doc_hash.php");
-//     echo "<br>";
-//   }
-//   echo "</dd>";
-// }
-
-// echo "</dl>";
-
-// ?>
+  - if ($doc_reference->getInheritedDoc($logger, 'see'))
+    %dt See:
+    %dd
+      - foreach ($doc_reference->getInheritedDoc($logger, 'see') as $see_class => $description)
+        != \Pages\PageRenderer::requireTemplate("_doc_hash", array('see_class' => $see_class, 'description' => $description))
+        %br

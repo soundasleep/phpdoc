@@ -264,4 +264,28 @@ class HtmlGenerator {
     return $method->getName() . "(" . implode(", ", $params) . ")";
   }
 
+  function formatDefault($description) {
+    switch ($description['type']) {
+      case "array":
+        $result = "array(";
+        if ($description['items']) {
+          $result .=  "...";
+        }
+        $result .= ")";
+        return $result;
+
+      case "string":
+        return "<code>\"" . $description['value'] . "\"</code>";
+
+      case "number":
+        return $description['value'];
+
+      case "const":
+        return "<code>" . $description['name'] . "</code>";
+
+      default:
+        return $description['type'];
+    }
+  }
+
 }
