@@ -77,7 +77,6 @@ class HtmlGenerator {
     $args['database'] = $this->database;
     $args['logger'] = $this->logger;
     $args['generator'] = $this;
-    $args['args'] = $args;    // so we can refer to them in child templates
 
     PageRenderer::header(array("title" => $title));
     PageRenderer::requireTemplate($template, $args);
@@ -86,7 +85,6 @@ class HtmlGenerator {
     ob_end_clean();
 
     file_put_contents($_file, $contents);
-
   }
 
   function linkTo($url, $title, $classes = array()) {
