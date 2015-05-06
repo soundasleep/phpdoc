@@ -112,6 +112,9 @@ class HtmlGenerator {
     $this->code_references = array();
     $text = preg_replace_callback("/<code>(.+?)<\\/code>/", array($this, 'formatInlineStripCode'), $text);
 
+    // replace {@link foo}s with {@link foo foos}
+    $text = preg_replace_callback("/{@link ([^ }]+)}s/", array($this, 'insertLinkPlurals'), $text);
+
     // @code
     $text = preg_replace_callback("/{@code ([^}]+)}/", array($this, 'formatInlineCode'), $text);
 
@@ -138,6 +141,13 @@ class HtmlGenerator {
     $this->format_reference = null;
 
     return $text;
+  }
+
+  /**
+   * Replace <code>{@link foo}s</code> with <code>{@link foo foos}</code>
+   */
+  function insertLinkPlurals($matches) {
+    return "{@link " . $matches[1] . " " . $matches[1] . "s}";
   }
 
   /**
