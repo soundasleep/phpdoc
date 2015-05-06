@@ -19,6 +19,13 @@
     - if ($reference != $doc_reference)
       %i != "(from " . $generator->linkTo($reference->getFilename(), $reference->getName()) . ")"
 
+- if ($doc_reference->getInheritedDoc($logger, 'deprecated'))
+  - foreach ($doc_reference->getInheritedDoc($logger, 'deprecated') as $description)
+    %p
+      %b Deprecated.
+
+      != $generator->formatInline($doc_reference, $description)
+
 %dl
   - if ($doc_reference instanceof PHPDoc2\Database\DocMethod && $doc_reference->overrides($logger))
     %dt Overrides:

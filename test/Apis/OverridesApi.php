@@ -17,4 +17,11 @@ class OverridesApi extends MultipleParamsApi {
     return "/api/v2/:currency";
   }
 
+  /**
+   * Overrides the parent method.
+   */
+  function testThrow1() {
+
+  }
+
 }

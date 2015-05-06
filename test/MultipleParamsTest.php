@@ -125,4 +125,16 @@ class MultipleParamsTest extends DocCommentTest {
     ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testSeeFullQualifiedRefWithComment']['doc']['see']);
   }
 
+  function testDeprecatedTag() {
+    $this->assertEquals(array(
+      "",
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['test']['doc']['deprecated']);
+  }
+
+  function testDeprecatedDescription() {
+    $this->assertEquals(array(
+      "use {@link #testThrow2()} instead",
+    ), $this->result['namespaces']['PHPDoc2\Test\Apis']['classes']['MultipleParamsApi']['methods']['testThrow1']['doc']['deprecated']);
+  }
+
 }

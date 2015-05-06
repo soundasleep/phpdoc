@@ -12,6 +12,7 @@ class DocCommentParser {
       'see' => $this->getSee($comment),
       'return' => $this->getReturn($comment),
       'throws' => $this->getThrows($comment),
+      'deprecated' => $this->getDeprecated($comment),
     );
   }
 
@@ -119,7 +120,11 @@ class DocCommentParser {
     for ($i = 0; $i < count($lines); $i++) {
       if (substr($lines[$i], 0, strlen("@" . $tag_name)) == "@" . $tag_name) {
         $bits = explode(" ", $lines[$i], 2);
-        $result[] = $bits[1];
+        if (count($bits) > 1) {
+          $result[] = $bits[1];
+        } else {
+          $result[] = "";     // e.g. '@deprecated' empty tag
+        }
       }
     }
     return $result;
@@ -139,6 +144,10 @@ class DocCommentParser {
 
   function getThrows($comment) {
     return $this->getHash("throw", $comment);
+  }
+
+  function getDeprecated($comment) {
+    return $this->getList("deprecated", $comment);
   }
 
 }

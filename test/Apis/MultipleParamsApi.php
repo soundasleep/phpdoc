@@ -43,6 +43,7 @@ class MultipleParamsApi extends Api {
   /**
    * @return one
    * @returns two
+   * @deprecated
    */
   function test() {
     // empty
@@ -50,6 +51,7 @@ class MultipleParamsApi extends Api {
 
   /**
    * @throws {@link BalanceException} if something
+   * @deprecated use {@link #testThrow2()} instead
    */
   function testThrow1() {
 

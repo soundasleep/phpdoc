@@ -71,7 +71,14 @@
     - foreach ($class->getMethods() as $method)
       %tr
         %td != $generator->linkTo($method->getFilename(), $method->getPrintableName())
-        %td != $generator->formatInline($method, $method->getInheritedDoc($logger, 'title'))
+        %td
+          != $generator->formatInline($method, $method->getInheritedDoc($logger, 'title'))
+          - if ($method->getInheritedDoc($logger, 'deprecated'))
+            - foreach ($method->getInheritedDoc($logger, 'deprecated') as $description)
+              %div
+                %b Deprecated.
+                != $generator->formatInline($method, $description)
+
 
 - if ($class->getInheritedMethods($logger))
 
@@ -90,6 +97,12 @@
           %td
             != $generator->formatInline($method, $method->getInheritedDoc($logger, 'title'))
             %i != "(from " . $generator->linkTo($method->getFilename(), $method->getClass()->getName()) . ")"
+            - if ($method->getInheritedDoc($logger, 'deprecated'))
+              - foreach ($method->getInheritedDoc($logger, 'deprecated') as $description)
+                %div
+                  %b Deprecated.
+                  != $generator->formatInline($method, $description)
+
 
 - foreach ($class->getMethods() as $method)
 

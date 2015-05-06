@@ -30,3 +30,7 @@ dd {
   font-size: 90%;
   color: #666;
 }
+
+table td, table th {
+  vertical-align: top;
+}
