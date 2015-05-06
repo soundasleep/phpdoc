@@ -63,7 +63,7 @@ To override or extend these templates, add `--templates "dir"`. The generator wi
 ## Inline tags supported
 
 * `{@link http://foo.com}`
-* `{@link Class}`, `{@link #method}, `{@link Class#method}`
+* `{@link Class}`, `{@link #method}, `{@link Class#method}`, `{@link Class description}` etc
 * `{@code ...}`
 
 ## TODO
@@ -78,7 +78,6 @@ To override or extend these templates, add `--templates "dir"`. The generator wi
 * `@var` tag
 * `@inheritDoc` inline tag - might be tricky
 * Class variables
-* `{@link foo actual text}` support
 * `{@link plural}s` support
 * Maybe try to provide tests for these types of tags, perhaps a sample project, or simply do HTML regexps on generated documentation
 * Global functions support

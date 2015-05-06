@@ -119,16 +119,16 @@ class HtmlGenerator {
     $text = preg_replace_callback("/`([^`]+)`/", array($this, 'formatInlineCode'), $text);
 
     // @link http
-    $text = preg_replace_callback("/{@link (https?:\\/\\/.+)}/", array($this, 'formatInlineLinkHttp'), $text);
+    $text = preg_replace_callback("/{@link (https?:\\/\\/[^ ]+)(| [^}]+)}/", array($this, 'formatInlineLinkHttp'), $text);
 
     // @link #method
-    $text = preg_replace_callback("/{@link #([^}\(]+).*}/", array($this, 'formatInlineLinkMethod'), $text);
+    $text = preg_replace_callback("/{@link #([^}\( ]+).*?(| [^}]+)}/", array($this, 'formatInlineLinkMethod'), $text);
 
     // @link class#method
-    $text = preg_replace_callback("/{@link ([^#}]+)#([^}\(]+).*}/", array($this, 'formatInlineLinkClassMethod'), $text);
+    $text = preg_replace_callback("/{@link ([^#} ]+)#([^}\( ]+).*?(| [^}]+)}/", array($this, 'formatInlineLinkClassMethod'), $text);
 
     // @link class
-    $text = preg_replace_callback("/{@link ([^}]+)}/", array($this, 'formatInlineLinkClass'), $text);
+    $text = preg_replace_callback("/{@link ([^} ]+?)(| [^}]+)}/", array($this, 'formatInlineLinkClass'), $text);
 
     // insert back <code>...</code>
     foreach ($this->code_references as $key => $value) {
@@ -161,36 +161,64 @@ class HtmlGenerator {
    * Render <code>{@link http://...}</code>.
    */
   protected function formatInlineLinkHttp($matches) {
-    return $this->linkTo($matches[1], $matches[1]);
+    // optional text
+    if ($matches[2]) {
+      return $this->linkTo($matches[1], trim($matches[2]));
+    } else {
+      return $this->linkTo($matches[1], $matches[1]);
+    }
   }
 
   /**
-   * Render <code>{@link class}</code>.
+   * Render <code>{@link class}</code> and
+   * <code>{@link class optional}</code>.
    */
   protected function formatInlineLinkClass($matches) {
     $class = $this->format_reference->findClass($matches[1], $this->logger);
     if ($class) {
-      return $this->linkTo($class->getFilename(), $class->getName());
+      // optional text
+      if ($matches[2]) {
+        return $this->linkTo($class->getFilename(), trim($matches[2]));
+      } else {
+        return $this->linkTo($class->getFilename(), $class->getName());
+      }
     }
-    return $matches[1];
+    // optional text
+    if ($matches[2]) {
+      return trim($matches[2]);
+    } else {
+      return $matches[1];
+    }
   }
 
   /**
-   * Render <code>{@link class#method}</code>.
+   * Render <code>{@link class#method}</code>
+   * and <code>{@link class#method optional}</code>.
    */
   protected function formatInlineLinkClassMethod($matches) {
     $class = $this->format_reference->findClass($matches[1], $this->logger);
     if ($class) {
       $method = $class->findMethod($matches[2], $this->logger);
       if ($method) {
-        return $this->linkTo($method->getFilename(), $class->getName() . "#" . $method->getName() . "()");
+        // optional text
+        if ($matches[3]) {
+          return $this->linkTo($method->getFilename(), trim($matches[3]));
+        } else {
+          return $this->linkTo($method->getFilename(), $class->getName() . "#" . $method->getName() . "()");
+        }
       }
     }
-    return $matches[1] . "#" . $matches[2];
+    // optional text
+    if ($matches[3]) {
+      return trim($matches[3]);
+    } else {
+      return $matches[1] . "#" . $matches[2];
+    }
   }
 
   /**
-   * Render <code>{@link #method}</code>.
+   * Render <code>{@link #method}</code>
+   * and <code>{@link #method optional}</code>.
    */
   protected function formatInlineLinkMethod($matches) {
     $class = $this->format_reference;
@@ -199,9 +227,19 @@ class HtmlGenerator {
     }
     $method = $class->findMethod($matches[1], $this->logger);
     if ($method) {
-      return $this->linkTo($method->getFilename(), "#" . $method->getName() . "()");
+      // optional text
+      if ($matches[2]) {
+        return $this->linkTo($method->getFilename(), trim($matches[2]));
+      } else {
+        return $this->linkTo($method->getFilename(), "#" . $method->getName() . "()");
+      }
     }
-    return "#" . $matches[1];
+    // optional text
+    if ($matches[2]) {
+      return trim($matches[2]);
+    } else {
+      return "#" . $matches[1];
+    }
   }
 
   /**

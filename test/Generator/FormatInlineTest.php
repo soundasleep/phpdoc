@@ -25,11 +25,60 @@ class FormatInlineTest extends SetupGenerator {
       $this->generator->formatInline($method, "{@link #foo()}"));
   }
 
+  function testMissingLink() {
+    $method = $this->database->findMethod("Empty\Foo#foo", $this->logger);
+    $this->assertEquals(
+      '#bar',
+      $this->generator->formatInline($method, "{@link #bar()}"));
+  }
+
   function testLinkWithoutParens() {
     $method = $this->database->findMethod("Empty\Foo#foo", $this->logger);
     $this->assertEquals(
       '<a href="class_Empty_Foo.html#foo" class="">#foo()</a>',
       $this->generator->formatInline($method, "{@link #foo}"));
+  }
+
+  function testLinkWithText() {
+    $method = $this->database->findMethod("Empty\Foo#foo", $this->logger);
+    $this->assertEquals(
+      '<a href="class_Empty_Foo.html#foo" class="">hello</a>',
+      $this->generator->formatInline($method, "{@link #foo() hello}"));
+  }
+
+  function testClassMethodLinkWithText() {
+    $method = $this->database->findMethod("Empty\Foo#foo", $this->logger);
+    $this->assertEquals(
+      '<a href="class_Empty_Foo.html#foo" class="">hello</a>',
+      $this->generator->formatInline($method, "{@link Foo#foo() hello}"));
+  }
+
+  function testClassLinkWithText() {
+    $method = $this->database->findMethod("Empty\Foo#foo", $this->logger);
+    $this->assertEquals(
+      '<a href="class_Empty_Foo.html" class="">hello</a>',
+      $this->generator->formatInline($method, "{@link Foo hello}"));
+  }
+
+  function testMissingLinkText() {
+    $method = $this->database->findMethod("Empty\Foo#foo", $this->logger);
+    $this->assertEquals(
+      'baz',
+      $this->generator->formatInline($method, "{@link #bar() baz}"));
+  }
+
+  function testLinkPlural() {
+    $method = $this->database->findMethod("Empty\Foo#foo", $this->logger);
+    $this->assertEquals(
+      '<a href="class_Empty_Foo.html#foo" class="">#foo()s</a>',
+      $this->generator->formatInline($method, "{@link #foo()}s"));
+  }
+
+  function testMissingLinkTextPlural() {
+    $method = $this->database->findMethod("Empty\Foo#foo", $this->logger);
+    $this->assertEquals(
+      'foos',
+      $this->generator->formatInline($method, "{@link #bar() foo}s"));
   }
 
 }
