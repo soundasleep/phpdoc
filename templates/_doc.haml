@@ -38,36 +38,37 @@
     %dt Parameters:
     %dd
       - foreach ($doc_reference->getInheritedDoc($logger, 'params') as $param => $description)
-        %code = $param
-        \-
-        != $generator->formatInline($doc_reference, $description)
-        %br
+        %div
+          %code = $param
+          \-
+          != $generator->formatInline($doc_reference, $description)
 
   - if ($doc_reference instanceof PHPDoc2\Database\DocMethod && $doc_reference->getDefaults($logger))
     %dt Defaults:
     %dd
       - foreach ($doc_reference->getDefaults($logger) as $param => $description)
-        %code = $param
-        != $generator->formatDefault($description);
-        %br
+        %div
+          %code = $param
+          \=
+          != $generator->formatDefault($description);
 
   - if ($doc_reference->getInheritedDoc($logger, 'return'))
     %dt Returns:
     %dd
       - foreach ($doc_reference->getInheritedDoc($logger, 'return') as $description)
-        != $generator->formatInline($doc_reference, $description)
-        %br
+        %div
+          != $generator->formatInline($doc_reference, $description)
 
   - if ($doc_reference->getInheritedDoc($logger, 'throws'))
     %dt Throws:
     %dd
       - foreach ($doc_reference->getInheritedDoc($logger, 'throws') as $see_class => $description)
-        != \Pages\PageRenderer::requireTemplate("_doc_hash", array('see_class' => $see_class, 'description' => $description))
-        %br
+        %div
+          != \Pages\PageRenderer::requireTemplate("_doc_hash", array('see_class' => $see_class, 'description' => $description))
 
   - if ($doc_reference->getInheritedDoc($logger, 'see'))
     %dt See:
     %dd
       - foreach ($doc_reference->getInheritedDoc($logger, 'see') as $see_class => $description)
-        != \Pages\PageRenderer::requireTemplate("_doc_hash", array('see_class' => $see_class, 'description' => $description))
-        %br
+        %div
+          != \Pages\PageRenderer::requireTemplate("_doc_hash", array('see_class' => $see_class, 'description' => $description))

@@ -69,12 +69,12 @@ To override or extend these templates, add `--templates "dir"`. The generator wi
 ## TODO
 
 * Look at compatibility with [phpdoc PSR standard](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
-* Generate demo docs and publish
 * Try generating docs for large projects e.g. Symfony
 * Method and class summaries should only display the first sentance of the 'title' doc
 * Highlight abstract classes
 * Display inherited abstract methods on abstract classes
 * `@author` tag
+* `@since` tag
 * `@var` tag
 * `@inheritDoc` inline tag - might be tricky
 * Class variables
