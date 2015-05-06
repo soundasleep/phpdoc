@@ -68,8 +68,7 @@ To override or extend these templates, add `--templates "dir"`. The generator wi
 
 ## TODO
 
-* Look at compatibility with [phpdoc PSR standard](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
-* Try generating docs for large projects e.g. Symfony
+* Look at compatibility with [phpdoc PSR standard](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md) and [reference PSR examples](https://github.com/soundasleep/phpdoc-psr)
 * Method and class summaries should only display the first sentance of the 'title' doc
 * Highlight abstract classes
 * Display inherited abstract methods on abstract classes
@@ -78,12 +77,12 @@ To override or extend these templates, add `--templates "dir"`. The generator wi
 * `@var` tag
 * `@inheritDoc` inline tag - might be tricky
 * Class variables
+* Class constants
 * Global functions support
+* Global constants
 * Option for `issue #123` to link to an external issue tracker
 * Link through to open source projects for composer projects
 * Link through to source code for GitHub projects
-* Support template directories through `config.json` for extensibility
-* Support HAML templates?
 
 ## See also
 
