@@ -181,7 +181,7 @@ class HtmlGenerator {
   protected function formatInlineLinkClassMethod($matches) {
     $class = $this->format_reference->findClass($matches[1], $this->logger);
     if ($class) {
-      $method = $class->getMethod($matches[2]);
+      $method = $class->findMethod($matches[2], $this->logger);
       if ($method) {
         return $this->linkTo($method->getFilename(), $class->getName() . "#" . $method->getName() . "()");
       }
@@ -197,7 +197,7 @@ class HtmlGenerator {
     if (!($class instanceof DocClasslike)) {
       $class = $class->getClass();
     }
-    $method = $class->getMethod($matches[1]);
+    $method = $class->findMethod($matches[1], $this->logger);
     if ($method) {
       return $this->linkTo($method->getFilename(), "#" . $method->getName() . "()");
     }
