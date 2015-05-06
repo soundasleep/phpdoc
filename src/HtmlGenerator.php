@@ -34,6 +34,7 @@ class HtmlGenerator {
     foreach ($this->options['templates'] as $template) {
       PageRenderer::addTemplatesLocation($template);
     }
+    PageRenderer::addStylesheet("default.css");
 
     // TODO delete all files within it?
 
