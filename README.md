@@ -58,6 +58,7 @@ To override or extend these templates, add `--templates "dir"`. The generator wi
 * `@param` $name _(description)_
 * `@return` description
 * `@see` _(Class)_ _(description)_
+* `@deprecated` _(description)_
 
 ## Inline tags supported
 
@@ -76,7 +77,6 @@ To override or extend these templates, add `--templates "dir"`. The generator wi
 * `@author` tag
 * `@var` tag
 * `@inheritDoc` inline tag - might be tricky
-* `@deprecated` tag
 * Class variables
 * `{@link foo actual text}` support
 * `{@link plural}s` support
